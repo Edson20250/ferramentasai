@@ -3,11 +3,12 @@ import { prisma } from '@/lib/prisma'
 
 export async function POST(
   req: NextRequest,
-  { params }: { params: { slug: string } }
+  context: { params: Promise<{ slug: string }> }
 ) {
   try {
+    const { slug } = await context.params
     const ferramenta = await prisma.ferramenta.findUnique({
-      where: { slug: params.slug },
+      where: { slug },
       select: { id: true, urlAfiliado: true, url: true },
     })
     if (!ferramenta) return NextResponse.json({ error: 'Não encontrado' }, { status: 404 })
