@@ -1,0 +1,102 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model Categoria {
+  id          String      @id @default(cuid())
+  nome        String
+  slug        String      @unique
+  descricao   String
+  icone       String
+  cor         String      @default("#6366f1")
+  ferramentas Ferramenta[]
+  criadoEm    DateTime    @default(now())
+
+  @@map("categorias")
+}
+
+model Ferramenta {
+  id              String     @id @default(cuid())
+  nome            String
+  slug            String     @unique
+  descricao       String
+  descricaoLonga  String?
+  url             String
+  urlAfiliado     String?
+  logoUrl         String?
+  categoriaId     String
+  categoria       Categoria  @relation(fields: [categoriaId], references: [id])
+  precificacao    Precificacao @default(FREEMIUM)
+  precoMensal     Float?
+  emPortugues     Boolean    @default(false)
+  verificado      Boolean    @default(false)
+  destaque        Boolean    @default(false)
+  aprovado        Boolean    @default(false)
+  tags            String[]
+  visualizacoes   Int        @default(0)
+  cliques         Int        @default(0)
+  avaliacaoMedia  Float      @default(0)
+  totalAvaliacoes Int        @default(0)
+  criadoEm        DateTime   @default(now())
+  atualizadoEm    DateTime   @updatedAt
+  avaliacoes      Avaliacao[]
+  listagem        ListagemPaga?
+
+  @@map("ferramentas")
+}
+
+model Avaliacao {
+  id           String     @id @default(cuid())
+  ferramentaId String
+  ferramenta   Ferramenta @relation(fields: [ferramentaId], references: [id])
+  nota         Int
+  comentario   String?
+  criadoEm     DateTime   @default(now())
+
+  @@map("avaliacoes")
+}
+
+model ListagemPaga {
+  id             String     @id @default(cuid())
+  ferramentaId   String     @unique
+  ferramenta     Ferramenta @relation(fields: [ferramentaId], references: [id])
+  stripeSessionId String?
+  plano          PlanoListagem @default(BASICO)
+  ativa          Boolean    @default(false)
+  inicioEm       DateTime?
+  fimEm          DateTime?
+  criadoEm       DateTime   @default(now())
+
+  @@map("listagens_pagas")
+}
+
+model Submissao {
+  id           String   @id @default(cuid())
+  nome         String
+  url          String
+  descricao    String
+  emailContato String
+  categoriaId  String?
+  estado       String   @default("pendente")
+  criadoEm    DateTime  @default(now())
+
+  @@map("submissoes")
+}
+
+enum Precificacao {
+  GRATUITO
+  FREEMIUM
+  PAGO
+  CONTACTO
+}
+
+enum PlanoListagem {
+  BASICO
+  PRO
+  DESTAQUE
+}
