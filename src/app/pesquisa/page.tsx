@@ -3,11 +3,12 @@ import { prisma } from '@/lib/prisma'
 import { ToolCard } from '@/components/ToolCard'
 import { Metadata } from 'next'
 
-type Props = { searchParams: { q?: string } }
+type Props = { searchParams: Promise<{ q?: string }> }
 
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
+  const { q } = await searchParams
   return {
-    title: searchParams.q ? `"${searchParams.q}" — Pesquisa de Ferramentas de IA` : 'Pesquisa — FerramentasAI',
+    title: q ? `"${q}" — Pesquisa de Ferramentas de IA` : 'Pesquisa — FerramentasAI',
   }
 }
 
@@ -29,7 +30,7 @@ async function pesquisar(q: string) {
 }
 
 export default async function PesquisaPage({ searchParams }: Props) {
-  const q = searchParams.q || ''
+  const { q = '' } = await searchParams
   const resultados = await pesquisar(q)
 
   return (
@@ -41,28 +42,17 @@ export default async function PesquisaPage({ searchParams }: Props) {
           'Pesquisar ferramentas de IA'
         )}
       </h1>
-
-      {/* Barra de pesquisa */}
       <form method="GET" className="mb-8">
         <div className="flex gap-2">
-          <input
-            name="q"
-            type="text"
-            defaultValue={q}
-            placeholder="Pesquisa ferramentas de IA…"
-            autoFocus
-            className="input-search flex-1"
-          />
+          <input name="q" type="text" defaultValue={q} placeholder="Pesquisa ferramentas de IA…" autoFocus className="input-search flex-1" />
           <button type="submit" className="btn-primary">Pesquisar</button>
         </div>
       </form>
-
       {q && (
         <p className="text-sm text-slate-400 mb-6">
           {resultados.length} resultado{resultados.length !== 1 ? 's' : ''} encontrado{resultados.length !== 1 ? 's' : ''}
         </p>
       )}
-
       {resultados.length > 0 ? (
         <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
           {resultados.map(f => (
