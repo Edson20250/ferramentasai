@@ -3,7 +3,7 @@ import Stripe from 'stripe'
 import { prisma } from '@/lib/prisma'
 
 const stripe = new Stripe(process.env.STRIPE_SECRET_KEY!, {
-  apiVersion: '2024-04-10',
+  apiVersion: '2023-10-16',
 })
 
 export async function POST(req: NextRequest) {
@@ -18,17 +18,8 @@ export async function POST(req: NextRequest) {
   }
 
   if (event.type === 'checkout.session.completed') {
-    const session = event.data.object as Stripe.CheckoutSession
+    const session = event.data.object as Stripe.Checkout.Session
     const plano = session.metadata?.plano as string
-
-    const planoMap: Record<string, 'BASICO' | 'PRO' | 'DESTAQUE'> = {
-      basico: 'BASICO',
-      pro: 'PRO',
-      destaque: 'DESTAQUE',
-    }
-
-    // Aqui atualizarias a listagem com o ferramentaId passado via metadata
-    // (adiciona ferramentaId ao checkout session ao integrar o formulário)
     console.log(`Pagamento confirmado: plano=${plano}, session=${session.id}`)
   }
 
