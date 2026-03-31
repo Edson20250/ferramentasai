@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { LUSO_AUDIENCE_LINE } from '@/lib/site-copy'
 
 export function Footer() {
   return (
@@ -11,7 +12,7 @@ export function Footer() {
               <span className="text-white font-display font-600 text-sm">ferramentasai.pt</span>
             </div>
             <p className="text-xs leading-relaxed text-slate-500">
-              O melhor diretório de ferramentas de IA em português. Curado para profissionais de Portugal e Brasil.
+              O melhor diretório de ferramentas de IA em português. Curado para {LUSO_AUDIENCE_LINE}.
             </p>
           </div>
 
@@ -48,7 +49,7 @@ export function Footer() {
 
         <div className="border-t border-slate-800 pt-6 flex flex-col sm:flex-row justify-between items-center gap-3">
           <p className="text-xs text-slate-600">
-            © {new Date().getFullYear()} FerramentasAI. Feito em Portugal 🇵🇹
+            © {new Date().getFullYear()} FerramentasAI. Feito em Portugal 🇵🇹 · Para quem fala português em todo o mundo
           </p>
           <div className="flex gap-4 text-xs text-slate-600">
             <Link href="/privacidade" className="hover:text-slate-400">Privacidade</Link>

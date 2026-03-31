@@ -1,11 +1,11 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
 import { DestaquePlanCards } from '@/components/DestaquePlanCards'
+import { LUSO_AUDIENCE_COUNTRIES, LUSO_PROFESSIONALS } from '@/lib/site-copy'
 
 export const metadata: Metadata = {
   title: 'Destaque a sua ferramenta de IA em português | FerramentasAI',
-  description:
-    'Alcança milhares de profissionais e empresas de Portugal e Brasil. Destaca a tua ferramenta de IA no maior diretório lusófono.',
+  description: `Alcança profissionais em ${LUSO_AUDIENCE_COUNTRIES}. Destaca a tua ferramenta de IA no maior diretório lusófono.`,
 }
 
 type Props = { searchParams: Promise<{ ferramentaId?: string; erro?: string }> }
@@ -30,10 +30,10 @@ export default async function DestacarPage({ searchParams }: Props) {
       <div className="text-center mb-12">
         <p className="text-emerald-700 text-sm font-medium mb-3">Publicidade no diretório</p>
         <h1 className="font-display text-3xl md:text-4xl font-800 text-slate-900 mb-4">
-          Alcança profissionais de Portugal e Brasil
+          Alcança profissionais em todo o mundo lusófono
         </h1>
         <p className="text-slate-500 max-w-2xl mx-auto leading-relaxed">
-          O FerramentasAI é o maior diretório de ferramentas de IA em português. Coloca a tua ferramenta à frente de quem decide.
+          O FerramentasAI é o maior diretório de ferramentas de IA em português para {LUSO_AUDIENCE_COUNTRIES}. Coloca a tua ferramenta à frente de quem decide.
         </p>
       </div>
 
@@ -90,7 +90,7 @@ export default async function DestacarPage({ searchParams }: Props) {
             },
             {
               q: 'Quem visita o FerramentasAI?',
-              r: 'Profissionais de marketing, developers, empreendedores e PMEs de Portugal e Brasil que procuram ferramentas de IA para o trabalho.',
+              r: `${LUSO_PROFESSIONALS} — marketing, developers, empreendedores e PMEs que procuram ferramentas de IA.`,
             },
             {
               q: 'Posso cancelar a qualquer momento?',

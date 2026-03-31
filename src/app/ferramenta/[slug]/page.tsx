@@ -113,7 +113,9 @@ export default async function FerramentaPage({ params }: Props) {
         <aside className="lg:w-72 shrink-0 space-y-4">
           <div className="bg-slate-900 text-white rounded-xl p-5">
             <p className="font-display font-600 text-sm mb-1">Trabalhas nesta ferramenta?</p>
-            <p className="text-xs text-slate-400 mb-4">Destaca-a e alcança milhares de profissionais PT/BR</p>
+            <p className="text-xs text-slate-400 mb-4">
+              Destaca-a e alcança profissionais em todo o espaço lusófono (CPLP e diáspora)
+            </p>
             <Link
               href={`/destaque?ferramentaId=${encodeURIComponent(f.id)}`}
               className="block text-center bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors"

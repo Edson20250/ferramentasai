@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { withDatabase } from '@/lib/with-database'
+import { LUSO_AUDIENCE_LINE } from '@/lib/site-copy'
 import { ToolCard } from '@/components/ToolCard'
 import { Metadata } from 'next'
 
@@ -55,7 +56,7 @@ export default async function HomePage() {
             </h1>
 
             <p className="text-slate-400 text-lg leading-relaxed mb-8 max-w-2xl">
-              Descobre e compara as melhores ferramentas de inteligência artificial. Curadas para profissionais e empresas de Portugal e Brasil.
+              Descobre e compara as melhores ferramentas de inteligência artificial. Curadas para {LUSO_AUDIENCE_LINE}.
             </p>
 
             {/* Search bar */}
@@ -169,7 +170,9 @@ export default async function HomePage() {
         <div className="border border-slate-200 rounded-2xl p-6 flex flex-col sm:flex-row items-center justify-between gap-4">
           <div>
             <p className="font-display font-600 text-slate-900 mb-1">Tens uma ferramenta de IA?</p>
-            <p className="text-sm text-slate-500">Aparece em frente de milhares de profissionais portugueses e brasileiros.</p>
+            <p className="text-sm text-slate-500">
+              Aparece em frente de milhares de profissionais em todo o espaço lusófono — CPLP e diáspora.
+            </p>
           </div>
           <div className="flex gap-2 shrink-0">
             <Link href="/submeter" className="btn-outline">Submeter grátis</Link>

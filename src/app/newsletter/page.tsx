@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { Metadata } from 'next'
+import { LUSO_AUDIENCE_SHORT } from '@/lib/site-copy'
 
 export const metadata: Metadata = {
   title: 'Newsletter — Novidades de IA em português | FerramentasAI',
@@ -14,7 +15,7 @@ export default function NewsletterPage() {
         Newsletter FerramentasAI
       </h1>
       <p className="text-slate-500 text-sm leading-relaxed mb-8">
-        Recebe todas as semanas as melhores ferramentas de IA novas, recursos úteis e dicas para profissionais em Portugal e Brasil.
+        Recebe todas as semanas as melhores ferramentas de IA novas, recursos úteis e dicas para profissionais em {LUSO_AUDIENCE_SHORT}.
       </p>
       <form action="/api/newsletter" method="POST" className="flex flex-col sm:flex-row gap-2 max-w-md mx-auto mb-10">
         <input

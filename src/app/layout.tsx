@@ -2,14 +2,29 @@ import type { Metadata } from 'next'
 import './globals.css'
 import { Navbar } from '@/components/Navbar'
 import { Footer } from '@/components/Footer'
+import { LUSO_META_DESCRIPTION } from '@/lib/site-copy'
 
 export const metadata: Metadata = {
   title: {
     default: 'FerramentasAI — Diretório de Ferramentas de IA em Português',
     template: '%s | FerramentasAI',
   },
-  description: 'Descobre as melhores ferramentas de inteligência artificial em português. Curadas e organizadas por categoria para profissionais e empresas portuguesas e brasileiras.',
-  keywords: ['ferramentas de IA', 'inteligência artificial', 'IA em português', 'tools IA', 'AI português', 'ferramentas inteligência artificial'],
+  description: `Descobre as melhores ferramentas de inteligência artificial em português. ${LUSO_META_DESCRIPTION}`,
+  keywords: [
+    'ferramentas de IA',
+    'inteligência artificial',
+    'IA em português',
+    'CPLP',
+    'lusófono',
+    'Angola',
+    'Cabo Verde',
+    'Brasil',
+    'Moçambique',
+    'Timor-Leste',
+    'Macau',
+    'Portugal',
+    'ferramentas inteligência artificial',
+  ],
   authors: [{ name: 'FerramentasAI' }],
   creator: 'FerramentasAI',
   openGraph: {
@@ -18,12 +33,12 @@ export const metadata: Metadata = {
     url: 'https://ferramentasai.pt',
     siteName: 'FerramentasAI',
     title: 'FerramentasAI — Diretório de Ferramentas de IA em Português',
-    description: 'Descobre as melhores ferramentas de inteligência artificial em português.',
+    description: LUSO_META_DESCRIPTION,
   },
   twitter: {
     card: 'summary_large_image',
     title: 'FerramentasAI',
-    description: 'Descobre as melhores ferramentas de inteligência artificial em português.',
+    description: LUSO_META_DESCRIPTION,
   },
   robots: {
     index: true,

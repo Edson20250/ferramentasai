@@ -1,6 +1,6 @@
 # FerramentasAI 🇵🇹
 
-> O maior diretório de ferramentas de IA em português — para Portugal e Brasil.
+> O maior diretório de ferramentas de IA em português — para o espaço lusófono (CPLP, Guiné Equatorial associada, Macau, diáspora).
 
 ## Stack
 
