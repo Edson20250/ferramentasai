@@ -1,5 +1,7 @@
 import Link from 'next/link'
+import { unstable_noStore as noStore } from 'next/cache'
 import { prisma } from '@/lib/prisma'
+import { isDatabaseConfigured } from '@/lib/db-config'
 import { Metadata } from 'next'
 
 export const metadata: Metadata = {
@@ -10,18 +12,21 @@ export const metadata: Metadata = {
 export const revalidate = 3600
 
 export default async function CategoriasPage() {
-  const categorias = await prisma.categoria.findMany({
-    orderBy: { nome: 'asc' },
-    include: {
-      _count: { select: { ferramentas: { where: { aprovado: true } } } },
-      ferramentas: {
-        where: { aprovado: true, destaque: true },
-        orderBy: { visualizacoes: 'desc' },
-        take: 3,
-        select: { nome: true, slug: true },
-      },
-    },
-  })
+  if (!isDatabaseConfigured()) noStore()
+  const categorias = isDatabaseConfigured()
+    ? await prisma.categoria.findMany({
+        orderBy: { nome: 'asc' },
+        include: {
+          _count: { select: { ferramentas: { where: { aprovado: true } } } },
+          ferramentas: {
+            where: { aprovado: true, destaque: true },
+            orderBy: { visualizacoes: 'desc' },
+            take: 3,
+            select: { nome: true, slug: true },
+          },
+        },
+      })
+    : []
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">
@@ -30,6 +35,15 @@ export default async function CategoriasPage() {
         <p className="text-slate-500 text-sm">{categorias.length} categorias · Ferramentas de IA organizadas por área</p>
       </div>
 
+      {categorias.length === 0 ? (
+        <div className="text-center py-16 text-slate-400 border border-dashed border-slate-200 rounded-2xl">
+          <p className="text-sm">
+            {isDatabaseConfigured()
+              ? 'Ainda não há categorias na base de dados.'
+              : 'Configura DATABASE_URL e corre o seed para carregar as categorias.'}
+          </p>
+        </div>
+      ) : (
       <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
         {categorias.map(cat => (
           <Link
@@ -67,6 +81,7 @@ export default async function CategoriasPage() {
           </Link>
         ))}
       </div>
+      )}
     </div>
   )
 }

@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
+import { isDatabaseConfigured } from '@/lib/db-config'
 import { ToolCard } from '@/components/ToolCard'
 import { Metadata } from 'next'
 
@@ -8,12 +9,12 @@ type Props = { searchParams: Promise<{ q?: string }> }
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {
   const { q } = await searchParams
   return {
-    title: q ? `"${q}" — Pesquisa de Ferramentas de IA` : 'Pesquisa — FerramentasAI',
+    title: q ? `\u201C${q}\u201D — Pesquisa de Ferramentas de IA` : 'Pesquisa — FerramentasAI',
   }
 }
 
 async function pesquisar(q: string) {
-  if (!q || q.length < 2) return []
+  if (!q || q.length < 2 || !isDatabaseConfigured()) return []
   return prisma.ferramenta.findMany({
     where: {
       aprovado: true,
@@ -37,7 +38,9 @@ export default async function PesquisaPage({ searchParams }: Props) {
     <div className="max-w-4xl mx-auto px-4 sm:px-6 py-8">
       <h1 className="font-display text-2xl font-700 text-slate-900 mb-6">
         {q ? (
-          <>Resultados para "<span className="text-emerald-700">{q}</span>"</>
+          <>
+            Resultados para <span className="text-emerald-700">&ldquo;{q}&rdquo;</span>
+          </>
         ) : (
           'Pesquisar ferramentas de IA'
         )}
@@ -62,7 +65,9 @@ export default async function PesquisaPage({ searchParams }: Props) {
       ) : q ? (
         <div className="text-center py-16">
           <p className="text-3xl mb-3">🔍</p>
-          <p className="font-display font-600 text-slate-900 mb-2">Nenhum resultado para "{q}"</p>
+          <p className="font-display font-600 text-slate-900 mb-2">
+            Nenhum resultado para <span className="text-emerald-700">&ldquo;{q}&rdquo;</span>
+          </p>
           <p className="text-sm text-slate-400 mb-6">Tenta pesquisar de outra forma ou explora por categoria.</p>
           <Link href="/categorias" className="btn-primary">Explorar categorias →</Link>
         </div>

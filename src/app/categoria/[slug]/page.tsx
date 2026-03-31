@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
+import { isDatabaseConfigured } from '@/lib/db-config'
 import { ToolCard } from '@/components/ToolCard'
 import { Metadata } from 'next'
 
@@ -20,6 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
+  if (!isDatabaseConfigured()) return []
   const categorias = await prisma.categoria.findMany({ select: { slug: true } })
   return categorias.map(c => ({ slug: c.slug }))
 }

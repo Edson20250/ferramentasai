@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { badgePreco, labelPreco } from '@/lib/utils'
 
 type Props = {
@@ -38,7 +39,7 @@ export function ToolCard({ ferramenta: f }: Props) {
         {/* Logo / Avatar */}
         <div className="w-10 h-10 rounded-lg bg-slate-100 flex items-center justify-center flex-shrink-0 text-xs font-bold text-slate-500 overflow-hidden">
           {f.logoUrl ? (
-            <img src={f.logoUrl} alt={f.nome} className="w-full h-full object-contain p-1" />
+            <Image src={f.logoUrl} alt={f.nome} width={40} height={40} className="w-full h-full object-contain p-1" />
           ) : (
             <span className="font-display">{initials}</span>
           )}

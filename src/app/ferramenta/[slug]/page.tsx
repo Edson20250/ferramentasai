@@ -1,6 +1,8 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
+import Image from 'next/image'
 import { prisma } from '@/lib/prisma'
+import { isDatabaseConfigured } from '@/lib/db-config'
 import { ToolCard } from '@/components/ToolCard'
 import { badgePreco, formatPreco, labelPreco } from '@/lib/utils'
 import { Metadata } from 'next'
@@ -19,6 +21,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 export async function generateStaticParams() {
+  if (!isDatabaseConfigured()) return []
   const ferramentas = await prisma.ferramenta.findMany({ where: { aprovado: true }, select: { slug: true } })
   return ferramentas.map(f => ({ slug: f.slug }))
 }
@@ -57,7 +60,7 @@ export default async function FerramentaPage({ params }: Props) {
             <div className="flex items-start gap-4 mb-4">
               <div className="w-14 h-14 rounded-xl bg-slate-100 flex items-center justify-center font-bold text-slate-500 shrink-0 overflow-hidden">
                 {f.logoUrl ? (
-                  <img src={f.logoUrl} alt={f.nome} className="w-full h-full object-contain p-1.5" />
+                  <Image src={f.logoUrl} alt={f.nome} width={56} height={56} className="w-full h-full object-contain p-1.5" />
                 ) : (
                   <span className="font-display text-lg">{initials}</span>
                 )}
