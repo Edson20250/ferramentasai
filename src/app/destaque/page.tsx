@@ -8,6 +8,8 @@ export const metadata: Metadata = {
   description: `Alcança profissionais em ${LUSO_AUDIENCE_COUNTRIES}. Destaca a tua ferramenta de IA no maior diretório lusófono.`,
 }
 
+export const dynamic = 'force-dynamic'
+
 type Props = { searchParams: Promise<{ ferramentaId?: string; erro?: string }> }
 
 const ERROS: Record<string, string> = {

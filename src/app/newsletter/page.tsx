@@ -7,6 +7,8 @@ export const metadata: Metadata = {
   description: 'Subscreve a newsletter gratuita do FerramentasAI: ferramentas novas, tutoriais e dicas de IA em português.',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default function NewsletterPage() {
   return (
     <div className="max-w-xl mx-auto px-4 sm:px-6 py-12 text-center">

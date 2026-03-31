@@ -6,6 +6,8 @@ export const metadata: Metadata = {
   description: 'Obrigado pela tua compra. Vamos ativar o teu destaque em breve.',
 }
 
+export const dynamic = 'force-dynamic'
+
 export default function DestaqueSucessoPage() {
   return (
     <div className="max-w-lg mx-auto px-4 sm:px-6 py-20 text-center">
