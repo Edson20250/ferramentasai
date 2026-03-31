@@ -7,6 +7,8 @@ import { ToolCard } from '@/components/ToolCard'
 import { badgePreco, formatPreco, labelPreco } from '@/lib/utils'
 import { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 type Props = { params: Promise<{ slug: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
@@ -73,47 +75,3 @@ export default async function FerramentaPage({ params }: Props) {
                 </div>
                 <Link href={`/categoria/${f.categoria.slug}`} className="text-sm text-slate-500 hover:text-emerald-700">{f.categoria.icone} {f.categoria.nome}</Link>
               </div>
-            </div>
-            <p className="text-slate-600 leading-relaxed mb-5">{f.descricao}</p>
-            {f.tags.length > 0 && (
-              <div className="flex flex-wrap gap-1.5 mb-5">
-                {f.tags.map(tag => (
-                  <Link key={tag} href={`/pesquisa?q=${encodeURIComponent(tag)}`} className="text-xs bg-slate-100 text-slate-600 hover:bg-slate-200 px-2.5 py-1 rounded-full">#{tag}</Link>
-                ))}
-              </div>
-            )}
-            <div className="flex flex-wrap gap-3">
-              <a href={linkExterno} target="_blank" rel="noopener noreferrer" className="btn-primary flex items-center gap-2">Visitar {f.nome} <span className="text-xs opacity-70">↗</span></a>
-              <Link href={`/categoria/${f.categoria.slug}`} className="btn-outline">Ver ferramentas similares</Link>
-            </div>
-            {f.urlAfiliado && <p className="text-xs text-slate-400 mt-3">* Link de afiliado — podemos receber comissão.</p>}
-          </div>
-          <div className="bg-white border border-slate-200 rounded-2xl p-6 mb-6">
-            <h2 className="font-display font-600 text-slate-900 mb-4">Informações</h2>
-            <div className="grid grid-cols-1 sm:grid-cols-2 gap-4">
-              <div><p className="text-xs text-slate-400 mb-1">Precificação</p><span className={badgePreco(f.precificacao)}>{labelPreco(f.precificacao)}</span></div>
-              {f.precoMensal && <div><p className="text-xs text-slate-400 mb-1">Preço</p><p className="text-sm font-medium">{formatPreco(f.precificacao, f.precoMensal)}</p></div>}
-              <div><p className="text-xs text-slate-400 mb-1">Português</p><p className="text-sm">{f.emPortugues ? '✅ Sim' : '❌ Apenas inglês'}</p></div>
-              <div><p className="text-xs text-slate-400 mb-1">Categoria</p><Link href={`/categoria/${f.categoria.slug}`} className="text-sm text-emerald-700 hover:underline">{f.categoria.icone} {f.categoria.nome}</Link></div>
-              <div><p className="text-xs text-slate-400 mb-1">Website</p><a href={f.url} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline truncate block">{new URL(f.url).hostname}</a></div>
-            </div>
-          </div>
-        </article>
-        <aside className="lg:w-72 shrink-0 space-y-4">
-          <div className="bg-slate-900 text-white rounded-xl p-5">
-            <p className="font-display font-600 text-sm mb-1">Trabalhas nesta ferramenta?</p>
-            <p className="text-xs text-slate-400 mb-4">Destaca-a e alcança milhares de profissionais PT/BR</p>
-            <Link href="/destaque" className="block text-center bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors">Saber mais →</Link>
-          </div>
-          {relacionadas.length > 0 && (
-            <div>
-              <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-3">Ferramentas similares</p>
-              <div className="space-y-2">{relacionadas.map(rel => <ToolCard key={rel.id} ferramenta={rel as any} />)}</div>
-              <Link href={`/categoria/${f.categoria.slug}`} className="block text-center text-sm text-emerald-700 mt-3 font-medium">Ver todas →</Link>
-            </div>
-          )}
-        </aside>
-      </div>
-    </div>
-  )
-}
