@@ -114,7 +114,12 @@ export default async function FerramentaPage({ params }: Props) {
           <div className="bg-slate-900 text-white rounded-xl p-5">
             <p className="font-display font-600 text-sm mb-1">Trabalhas nesta ferramenta?</p>
             <p className="text-xs text-slate-400 mb-4">Destaca-a e alcança milhares de profissionais PT/BR</p>
-            <Link href="/destaque" className="block text-center bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors">Saber mais →</Link>
+            <Link
+              href={`/destaque?ferramentaId=${encodeURIComponent(f.id)}`}
+              className="block text-center bg-emerald-500 hover:bg-emerald-400 text-white text-sm font-medium px-4 py-2.5 rounded-lg transition-colors"
+            >
+              Destacar no diretório →
+            </Link>
           </div>
           {relacionadas.length > 0 && (
             <div>

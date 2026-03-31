@@ -62,17 +62,29 @@ model Avaliacao {
 }
 
 model ListagemPaga {
-  id             String     @id @default(cuid())
-  ferramentaId   String     @unique
-  ferramenta     Ferramenta @relation(fields: [ferramentaId], references: [id])
-  stripeSessionId String?
-  plano          PlanoListagem @default(BASICO)
-  ativa          Boolean    @default(false)
-  inicioEm       DateTime?
-  fimEm          DateTime?
-  criadoEm       DateTime   @default(now())
+  id              String        @id @default(cuid())
+  ferramentaId    String        @unique
+  ferramenta      Ferramenta    @relation(fields: [ferramentaId], references: [id])
+  stripeSessionId String?       @unique
+  plano           PlanoListagem @default(BASICO)
+  ativa           Boolean       @default(false)
+  inicioEm        DateTime?
+  fimEm           DateTime?
+  criadoEm        DateTime      @default(now())
 
+  @@index([ativa, fimEm])
   @@map("listagens_pagas")
+}
+
+/// Idempotência: um checkout.session.id só é processado uma vez
+model StripeProcessedSession {
+  stripeSessionId String        @id
+  ferramentaId    String
+  plano           PlanoListagem
+  createdAt       DateTime      @default(now())
+
+  @@index([ferramentaId])
+  @@map("stripe_processed_sessions")
 }
 
 model Submissao {
