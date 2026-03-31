@@ -18,29 +18,33 @@ export default async function sitemap(): Promise<MetadataRoute.Sitemap> {
     return rotasEstaticas
   }
 
-  const [ferramentas, categorias] = await Promise.all([
-    prisma.ferramenta.findMany({
-      where: { aprovado: true },
-      select: { slug: true, atualizadoEm: true },
-    }),
-    prisma.categoria.findMany({
-      select: { slug: true },
-    }),
-  ])
+  try {
+    const [ferramentas, categorias] = await Promise.all([
+      prisma.ferramenta.findMany({
+        where: { aprovado: true },
+        select: { slug: true, atualizadoEm: true },
+      }),
+      prisma.categoria.findMany({
+        select: { slug: true },
+      }),
+    ])
 
-  const rotasCategorias: MetadataRoute.Sitemap = categorias.map(c => ({
-    url: `${base}/categoria/${c.slug}`,
-    lastModified: new Date(),
-    changeFrequency: 'weekly',
-    priority: 0.8,
-  }))
+    const rotasCategorias: MetadataRoute.Sitemap = categorias.map(c => ({
+      url: `${base}/categoria/${c.slug}`,
+      lastModified: new Date(),
+      changeFrequency: 'weekly',
+      priority: 0.8,
+    }))
 
-  const rotasFerramentas: MetadataRoute.Sitemap = ferramentas.map(f => ({
-    url: `${base}/ferramenta/${f.slug}`,
-    lastModified: f.atualizadoEm,
-    changeFrequency: 'monthly',
-    priority: 0.7,
-  }))
+    const rotasFerramentas: MetadataRoute.Sitemap = ferramentas.map(f => ({
+      url: `${base}/ferramenta/${f.slug}`,
+      lastModified: f.atualizadoEm,
+      changeFrequency: 'monthly',
+      priority: 0.7,
+    }))
 
-  return [...rotasEstaticas, ...rotasCategorias, ...rotasFerramentas]
+    return [...rotasEstaticas, ...rotasCategorias, ...rotasFerramentas]
+  } catch {
+    return rotasEstaticas
+  }
 }
