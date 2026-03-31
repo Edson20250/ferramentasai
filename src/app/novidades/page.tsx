@@ -1,19 +1,17 @@
 import Link from 'next/link'
-import { unstable_noStore as noStore } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 import { isDatabaseConfigured } from '@/lib/db-config'
 import { ToolCard } from '@/components/ToolCard'
 import { Metadata } from 'next'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Novidades — Ferramentas de IA adicionadas recentemente | FerramentasAI',
   description: 'As ferramentas de inteligência artificial mais recentes adicionadas ao diretório em português.',
 }
 
-export const revalidate = 3600
-
 export default async function NovidadesPage() {
-  if (!isDatabaseConfigured()) noStore()
   const ferramentas = isDatabaseConfigured()
     ? await prisma.ferramenta.findMany({
         where: { aprovado: true },

@@ -4,6 +4,8 @@ import { isDatabaseConfigured } from '@/lib/db-config'
 import { ToolCard } from '@/components/ToolCard'
 import { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 type Props = { searchParams: Promise<{ q?: string }> }
 
 export async function generateMetadata({ searchParams }: Props): Promise<Metadata> {

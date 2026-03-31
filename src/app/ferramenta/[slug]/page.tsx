@@ -2,7 +2,6 @@ import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import Image from 'next/image'
 import { prisma } from '@/lib/prisma'
-import { isDatabaseConfigured } from '@/lib/db-config'
 import { ToolCard } from '@/components/ToolCard'
 import { badgePreco, formatPreco, labelPreco } from '@/lib/utils'
 import { Metadata } from 'next'
@@ -21,14 +20,6 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     keywords: [...f.tags, f.categoria.nome, 'ferramenta ia português'],
   }
 }
-
-export async function generateStaticParams() {
-  if (!isDatabaseConfigured()) return []
-  const ferramentas = await prisma.ferramenta.findMany({ where: { aprovado: true }, select: { slug: true } })
-  return ferramentas.map(f => ({ slug: f.slug }))
-}
-
-export const revalidate = 3600
 
 export default async function FerramentaPage({ params }: Props) {
   const { slug } = await params

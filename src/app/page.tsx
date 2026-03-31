@@ -1,15 +1,14 @@
 import Link from 'next/link'
-import { unstable_noStore as noStore } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 import { isDatabaseConfigured } from '@/lib/db-config'
 import { ToolCard } from '@/components/ToolCard'
 import { Metadata } from 'next'
 
+export const dynamic = 'force-dynamic'
+
 export const metadata: Metadata = {
   title: 'FerramentasAI — Diretório de Ferramentas de IA em Português',
 }
-
-export const revalidate = 3600 // ISR: revalida a cada hora
 
 async function getDados() {
   if (!isDatabaseConfigured()) {
@@ -32,7 +31,6 @@ async function getDados() {
 }
 
 export default async function HomePage() {
-  if (!isDatabaseConfigured()) noStore()
   const { categorias, ferramentasDestaque, totalFerramentas } = await getDados()
 
   return (

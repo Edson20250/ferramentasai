@@ -1,18 +1,16 @@
 import Link from 'next/link'
-import { unstable_noStore as noStore } from 'next/cache'
 import { prisma } from '@/lib/prisma'
 import { isDatabaseConfigured } from '@/lib/db-config'
 import { Metadata } from 'next'
+
+export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'Todas as Categorias de Ferramentas de IA em Português',
   description: 'Explora todas as categorias de ferramentas de inteligência artificial em português.',
 }
 
-export const revalidate = 3600
-
 export default async function CategoriasPage() {
-  if (!isDatabaseConfigured()) noStore()
   const categorias = isDatabaseConfigured()
     ? await prisma.categoria.findMany({
         orderBy: { nome: 'asc' },
