@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
-import { isDatabaseConfigured } from '@/lib/db-config'
+import { withDatabase } from '@/lib/with-database'
 import { ToolCard } from '@/components/ToolCard'
 import { Metadata } from 'next'
 
@@ -11,23 +11,25 @@ export const metadata: Metadata = {
 }
 
 async function getDados() {
-  if (!isDatabaseConfigured()) {
-    return { categorias: [], ferramentasDestaque: [], totalFerramentas: 0 }
-  }
-  const [categorias, ferramentasDestaque, totalFerramentas] = await Promise.all([
-    prisma.categoria.findMany({
-      orderBy: { nome: 'asc' },
-      include: { _count: { select: { ferramentas: { where: { aprovado: true } } } } },
-    }),
-    prisma.ferramenta.findMany({
-      where: { destaque: true, aprovado: true },
-      include: { categoria: true },
-      orderBy: { visualizacoes: 'desc' },
-      take: 6,
-    }),
-    prisma.ferramenta.count({ where: { aprovado: true } }),
-  ])
-  return { categorias, ferramentasDestaque, totalFerramentas }
+  return withDatabase(
+    { categorias: [], ferramentasDestaque: [], totalFerramentas: 0 },
+    async () => {
+      const [categorias, ferramentasDestaque, totalFerramentas] = await Promise.all([
+        prisma.categoria.findMany({
+          orderBy: { nome: 'asc' },
+          include: { _count: { select: { ferramentas: { where: { aprovado: true } } } } },
+        }),
+        prisma.ferramenta.findMany({
+          where: { destaque: true, aprovado: true },
+          include: { categoria: true },
+          orderBy: { visualizacoes: 'desc' },
+          take: 6,
+        }),
+        prisma.ferramenta.count({ where: { aprovado: true } }),
+      ])
+      return { categorias, ferramentasDestaque, totalFerramentas }
+    },
+  )
 }
 
 export default async function HomePage() {

@@ -3,7 +3,8 @@ import Link from 'next/link'
 import Image from 'next/image'
 import { prisma } from '@/lib/prisma'
 import { ToolCard } from '@/components/ToolCard'
-import { badgePreco, formatPreco, labelPreco } from '@/lib/utils'
+import { badgePreco, formatPreco, labelPreco, safeUrlHostname } from '@/lib/utils'
+import { isDatabaseConfigured } from '@/lib/db-config'
 import { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
@@ -12,28 +13,43 @@ type Props = { params: Promise<{ slug: string }> }
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const f = await prisma.ferramenta.findUnique({ where: { slug }, include: { categoria: true } })
-  if (!f) return {}
-  return {
-    title: `${f.nome} — Ferramenta de IA em Português`,
-    description: f.descricao,
-    keywords: [...f.tags, f.categoria.nome, 'ferramenta ia português'],
+  try {
+    if (!isDatabaseConfigured()) return {}
+    const f = await prisma.ferramenta.findUnique({ where: { slug }, include: { categoria: true } })
+    if (!f) return {}
+    return {
+      title: `${f.nome} — Ferramenta de IA em Português`,
+      description: f.descricao,
+      keywords: [...f.tags, f.categoria.nome, 'ferramenta ia português'],
+    }
+  } catch {
+    return {}
   }
 }
 
 export default async function FerramentaPage({ params }: Props) {
   const { slug } = await params
-  const f = await prisma.ferramenta.findUnique({ where: { slug, aprovado: true }, include: { categoria: true } })
-  if (!f) notFound()
 
-  prisma.ferramenta.update({ where: { id: f.id }, data: { visualizacoes: { increment: 1 } } }).catch(() => {})
+  let f
+  let relacionadas
 
-  const relacionadas = await prisma.ferramenta.findMany({
-    where: { categoriaId: f.categoriaId, aprovado: true, id: { not: f.id } },
-    include: { categoria: true },
-    orderBy: { destaque: 'desc' },
-    take: 4,
-  })
+  try {
+    if (!isDatabaseConfigured()) notFound()
+    const found = await prisma.ferramenta.findUnique({ where: { slug, aprovado: true }, include: { categoria: true } })
+    if (!found) notFound()
+    f = found
+
+    prisma.ferramenta.update({ where: { id: f.id }, data: { visualizacoes: { increment: 1 } } }).catch(() => {})
+
+    relacionadas = await prisma.ferramenta.findMany({
+      where: { categoriaId: f.categoriaId, aprovado: true, id: { not: f.id } },
+      include: { categoria: true },
+      orderBy: { destaque: 'desc' },
+      take: 4,
+    })
+  } catch {
+    notFound()
+  }
 
   const linkExterno = f.urlAfiliado || f.url
   const initials = f.nome.split(' ').map((w: string) => w[0]).slice(0, 2).join('').toUpperCase()
@@ -90,7 +106,7 @@ export default async function FerramentaPage({ params }: Props) {
               )}
               <div><p className="text-xs text-slate-400 mb-1">Português</p><p className="text-sm">{f.emPortugues ? '✅ Sim' : '❌ Apenas inglês'}</p></div>
               <div><p className="text-xs text-slate-400 mb-1">Categoria</p><Link href={`/categoria/${f.categoria.slug}`} className="text-sm text-emerald-700 hover:underline">{f.categoria.icone} {f.categoria.nome}</Link></div>
-              <div><p className="text-xs text-slate-400 mb-1">Website</p><a href={f.url} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline truncate block">{new URL(f.url).hostname}</a></div>
+              <div><p className="text-xs text-slate-400 mb-1">Website</p><a href={f.url} target="_blank" rel="noopener noreferrer" className="text-sm text-blue-600 hover:underline truncate block">{safeUrlHostname(f.url)}</a></div>
             </div>
           </div>
         </article>

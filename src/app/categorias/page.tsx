@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { isDatabaseConfigured } from '@/lib/db-config'
+import { withDatabase } from '@/lib/with-database'
 import { Metadata } from 'next'
 
 export const dynamic = 'force-dynamic'
@@ -11,20 +12,20 @@ export const metadata: Metadata = {
 }
 
 export default async function CategoriasPage() {
-  const categorias = isDatabaseConfigured()
-    ? await prisma.categoria.findMany({
-        orderBy: { nome: 'asc' },
-        include: {
-          _count: { select: { ferramentas: { where: { aprovado: true } } } },
-          ferramentas: {
-            where: { aprovado: true, destaque: true },
-            orderBy: { visualizacoes: 'desc' },
-            take: 3,
-            select: { nome: true, slug: true },
-          },
+  const categorias = await withDatabase([], () =>
+    prisma.categoria.findMany({
+      orderBy: { nome: 'asc' },
+      include: {
+        _count: { select: { ferramentas: { where: { aprovado: true } } } },
+        ferramentas: {
+          where: { aprovado: true, destaque: true },
+          orderBy: { visualizacoes: 'desc' },
+          take: 3,
+          select: { nome: true, slug: true },
         },
-      })
-    : []
+      },
+    }),
+  )
 
   return (
     <div className="max-w-5xl mx-auto px-4 sm:px-6 py-10">

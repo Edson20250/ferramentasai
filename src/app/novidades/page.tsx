@@ -1,6 +1,7 @@
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
 import { isDatabaseConfigured } from '@/lib/db-config'
+import { withDatabase } from '@/lib/with-database'
 import { ToolCard } from '@/components/ToolCard'
 import { Metadata } from 'next'
 
@@ -12,14 +13,14 @@ export const metadata: Metadata = {
 }
 
 export default async function NovidadesPage() {
-  const ferramentas = isDatabaseConfigured()
-    ? await prisma.ferramenta.findMany({
-        where: { aprovado: true },
-        include: { categoria: true },
-        orderBy: { criadoEm: 'desc' },
-        take: 48,
-      })
-    : []
+  const ferramentas = await withDatabase([], () =>
+    prisma.ferramenta.findMany({
+      where: { aprovado: true },
+      include: { categoria: true },
+      orderBy: { criadoEm: 'desc' },
+      take: 48,
+    }),
+  )
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">

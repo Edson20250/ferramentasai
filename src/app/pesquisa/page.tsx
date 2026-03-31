@@ -1,6 +1,6 @@
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
-import { isDatabaseConfigured } from '@/lib/db-config'
+import { withDatabase } from '@/lib/with-database'
 import { ToolCard } from '@/components/ToolCard'
 import { Metadata } from 'next'
 
@@ -16,20 +16,22 @@ export async function generateMetadata({ searchParams }: Props): Promise<Metadat
 }
 
 async function pesquisar(q: string) {
-  if (!q || q.length < 2 || !isDatabaseConfigured()) return []
-  return prisma.ferramenta.findMany({
-    where: {
-      aprovado: true,
-      OR: [
-        { nome: { contains: q, mode: 'insensitive' } },
-        { descricao: { contains: q, mode: 'insensitive' } },
-        { tags: { has: q.toLowerCase() } },
-      ],
-    },
-    include: { categoria: true },
-    orderBy: [{ destaque: 'desc' }, { visualizacoes: 'desc' }],
-    take: 30,
-  })
+  if (!q || q.length < 2) return []
+  return withDatabase([], () =>
+    prisma.ferramenta.findMany({
+      where: {
+        aprovado: true,
+        OR: [
+          { nome: { contains: q, mode: 'insensitive' } },
+          { descricao: { contains: q, mode: 'insensitive' } },
+          { tags: { has: q.toLowerCase() } },
+        ],
+      },
+      include: { categoria: true },
+      orderBy: [{ destaque: 'desc' }, { visualizacoes: 'desc' }],
+      take: 30,
+    }),
+  )
 }
 
 export default async function PesquisaPage({ searchParams }: Props) {

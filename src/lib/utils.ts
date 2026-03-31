@@ -33,3 +33,15 @@ export function labelPreco(precificacao: string): string {
     default: return precificacao
   }
 }
+
+export function safeUrlHostname(href: string): string {
+  try {
+    return new URL(href).hostname
+  } catch {
+    try {
+      return new URL(href.startsWith('http') ? href : `https://${href}`).hostname
+    } catch {
+      return href.replace(/^https?:\/\//i, '').split('/')[0] || href
+    }
+  }
+}

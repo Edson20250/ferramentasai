@@ -1,6 +1,7 @@
 import { notFound } from 'next/navigation'
 import Link from 'next/link'
 import { prisma } from '@/lib/prisma'
+import { isDatabaseConfigured } from '@/lib/db-config'
 import { ToolCard } from '@/components/ToolCard'
 import { Metadata } from 'next'
 
@@ -13,11 +14,16 @@ type Props = {
 
 export async function generateMetadata({ params }: Props): Promise<Metadata> {
   const { slug } = await params
-  const cat = await prisma.categoria.findUnique({ where: { slug } })
-  if (!cat) return {}
-  return {
-    title: `${cat.nome} — Ferramentas de IA em Português`,
-    description: cat.descricao,
+  try {
+    if (!isDatabaseConfigured()) return {}
+    const cat = await prisma.categoria.findUnique({ where: { slug } })
+    if (!cat) return {}
+    return {
+      title: `${cat.nome} — Ferramentas de IA em Português`,
+      description: cat.descricao,
+    }
+  } catch {
+    return {}
   }
 }
 
@@ -38,27 +44,36 @@ export default async function CategoriaPage({ params, searchParams }: Props) {
   const { slug } = await params
   const { ordem = 'destaque', preco = 'todos' } = await searchParams
 
-  const categoria = await prisma.categoria.findUnique({
-    where: { slug },
-    include: { _count: { select: { ferramentas: { where: { aprovado: true } } } } },
-  })
-  if (!categoria) notFound()
+  let categoria
+  let ferramentas
+  let todasCategorias
 
-  const where: any = { categoriaId: categoria.id, aprovado: true }
-  if (preco && preco !== 'todos') where.precificacao = preco.toUpperCase()
+  try {
+    if (!isDatabaseConfigured()) notFound()
+    categoria = await prisma.categoria.findUnique({
+      where: { slug },
+      include: { _count: { select: { ferramentas: { where: { aprovado: true } } } } },
+    })
+    if (!categoria) notFound()
 
-  const orderBy: any =
-    ordem === 'nome' ? { nome: 'asc' } :
-    ordem === 'novos' ? { criadoEm: 'desc' } :
-    { destaque: 'desc' }
+    const where: Record<string, unknown> = { categoriaId: categoria.id, aprovado: true }
+    if (preco && preco !== 'todos') where.precificacao = preco.toUpperCase()
 
-  const ferramentas = await prisma.ferramenta.findMany({
-    where,
-    include: { categoria: true },
-    orderBy: [orderBy, { visualizacoes: 'desc' }],
-  })
+    const orderBy =
+      ordem === 'nome' ? { nome: 'asc' as const } :
+      ordem === 'novos' ? { criadoEm: 'desc' as const } :
+      { destaque: 'desc' as const }
 
-  const todasCategorias = await prisma.categoria.findMany({ orderBy: { nome: 'asc' } })
+    ferramentas = await prisma.ferramenta.findMany({
+      where,
+      include: { categoria: true },
+      orderBy: [orderBy, { visualizacoes: 'desc' }],
+    })
+
+    todasCategorias = await prisma.categoria.findMany({ orderBy: { nome: 'asc' } })
+  } catch {
+    notFound()
+  }
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
