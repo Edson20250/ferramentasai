@@ -5,78 +5,99 @@
 @import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
 
 :root {
-  --font-plus-jakarta: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-syne: 'Syne', system-ui, sans-serif;
+    --font-plus-jakarta: 'Plus Jakarta Sans', system-ui, sans-serif;
+    --font-syne: 'Syne', system-ui, sans-serif;
 }
 
 @layer base {
-  * {
-    box-sizing: border-box;
-  }
-
-  html {
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-  }
-
-  body {
-    background: #f8f7f4;
-    color: #111;
-    font-family: var(--font-plus-jakarta);
-  }
-
-  ::selection {
-    background: #bbf7d0;
-    color: #14532d;
-  }
+    * { box-sizing: border-box; }
+    html {
+          scroll-behavior: smooth;
+          -webkit-font-smoothing: antialiased;
+    }
+    body {
+          background: #f8f7f4;
+          color: #111;
+          font-family: var(--font-plus-jakarta);
+    }
+    ::selection {
+          background: #bbf7d0;
+          color: #14532d;
+    }
 }
 
 @layer components {
-  .badge-preco {
-    @apply inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full;
-  }
-  .badge-gratuito {
-    @apply bg-green-100 text-green-800;
-  }
-  .badge-freemium {
-    @apply bg-blue-100 text-blue-800;
-  }
-  .badge-pago {
-    @apply bg-amber-100 text-amber-800;
-  }
-  .badge-contacto {
-    @apply bg-slate-100 text-slate-700;
+
+  /* Hero */
+  .hero-section {
+        @apply bg-slate-900;
+        background-image:
+                radial-gradient(ellipse 80% 50% at 80% 10%, rgba(16,185,129,0.18) 0%, transparent 60%),
+                radial-gradient(ellipse 60% 40% at 20% 90%, rgba(99,102,241,0.12) 0%, transparent 55%);
   }
 
+  /* Category card */
+  .cat-card {
+        @apply relative bg-white border border-slate-200 rounded-xl p-4 pt-5
+               hover:shadow-md hover:-translate-y-0.5
+               transition-all duration-200 overflow-hidden cursor-pointer;
+  }
+    .cat-card:hover {
+          border-color: rgba(0,0,0,0.12);
+    }
+
+  /* Tool cards */
   .card-ferramenta {
-    @apply bg-white border border-slate-200 rounded-xl p-4 hover:border-slate-300 hover:shadow-sm transition-all duration-200 relative;
+        @apply bg-white border border-slate-200 rounded-xl p-4
+               hover:border-slate-300 hover:shadow-sm
+               transition-all duration-200 relative;
   }
+    .card-ferramenta:hover {
+          transform: translateY(-1px);
+    }
+    .card-ferramenta-destaque {
+          @apply bg-white border-2 border-emerald-400 rounded-xl p-4
+                 hover:shadow-md
+                 transition-all duration-200 relative;
+    }
+    .card-ferramenta-destaque:hover {
+          transform: translateY(-1px);
+          border-color: #34d399;
+    }
 
-  .card-ferramenta-destaque {
-    @apply bg-white border-2 border-emerald-400 rounded-xl p-4 hover:shadow-md transition-all duration-200 relative;
+  /* Badges preco */
+  .badge-preco {
+        @apply inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full;
   }
+    .badge-gratuito  { @apply bg-green-100 text-green-800; }
+    .badge-freemium  { @apply bg-blue-100 text-blue-800; }
+    .badge-pago      { @apply bg-amber-100 text-amber-800; }
+    .badge-contacto  { @apply bg-slate-100 text-slate-700; }
 
+  /* Buttons */
   .btn-primary {
-    @apply bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 transition-colors duration-150;
+        @apply bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium
+               hover:bg-slate-800 active:scale-95
+               transition-all duration-150;
   }
-
-  .btn-outline {
-    @apply border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 transition-colors duration-150;
-  }
-
-  .input-search {
-    @apply w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent;
-  }
+    .btn-outline {
+          @apply border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium
+                 hover:bg-slate-50 hover:border-slate-400 active:scale-95
+                 transition-all duration-150;
+    }
+    .input-search {
+          @apply w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm
+                 placeholder:text-slate-400
+                 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent;
+    }
 }
 
-/* Animações de entrada escalonadas */
 .animate-delay-100 { animation-delay: 100ms; }
 .animate-delay-200 { animation-delay: 200ms; }
 .animate-delay-300 { animation-delay: 300ms; }
 .animate-delay-400 { animation-delay: 400ms; }
 
-/* Scrollbar discreta */
-::-webkit-scrollbar { width: 6px; }
+::-webkit-scrollbar       { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
 ::-webkit-scrollbar-thumb { background: #d1d5db; border-radius: 3px; }
 ::-webkit-scrollbar-thumb:hover { background: #9ca3af; }
