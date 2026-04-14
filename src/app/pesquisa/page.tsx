@@ -36,6 +36,8 @@ async function pesquisar(q: string) {
   )
 }
 
+const SUGESTOES = ['ChatGPT', 'Midjourney', 'Copilot', 'Perplexity', 'Gamma', 'Notion AI']
+
 export default async function PesquisaPage({ searchParams }: Props) {
   const { q = '' } = await searchParams
   const resultados = await pesquisar(q)
@@ -43,26 +45,40 @@ export default async function PesquisaPage({ searchParams }: Props) {
   return (
     <div className="min-h-screen" style={{ background: 'var(--surface-subtle)' }}>
 
-      {/* ── Header ───────────────────────────────────── */}
+      {/* ── Search header ──────────────────────────── */}
       <div style={{ background: 'var(--surface)', borderBottom: '1px solid var(--border)' }}>
         <div className="max-w-3xl mx-auto px-5 sm:px-8 py-10">
-          <h1 className="font-bold text-[var(--foreground)] text-xl sm:text-2xl tracking-tight mb-5">
-            {q ? (
-              <>
+          {q ? (
+            <>
+              <nav className="flex items-center gap-1.5 text-xs text-[var(--muted-foreground)] mb-5">
+                <Link href="/" className="hover:text-[var(--foreground)] transition-colors">Início</Link>
+                <span>/</span>
+                <Link href="/pesquisa" className="hover:text-[var(--foreground)] transition-colors">Pesquisa</Link>
+                <span>/</span>
+                <span className="text-[var(--foreground)] truncate max-w-[200px]">{q}</span>
+              </nav>
+              <h1
+                className="font-bold text-[var(--foreground)] mb-5 tracking-tight"
+                style={{ fontSize: 'clamp(1.375rem, 3vw, 1.875rem)', letterSpacing: '-0.025em' }}
+              >
                 Resultados para{' '}
                 <span className="text-green-600">&ldquo;{q}&rdquo;</span>
-              </>
-            ) : (
-              'Pesquisar ferramentas de IA'
-            )}
-          </h1>
+              </h1>
+            </>
+          ) : (
+            <>
+              <span className="section-eyebrow">Descoberta</span>
+              <h1
+                className="font-bold text-[var(--foreground)] mt-1 mb-5 tracking-tight"
+                style={{ fontSize: 'clamp(1.375rem, 3vw, 1.875rem)', letterSpacing: '-0.025em' }}
+              >
+                Pesquisar ferramentas de IA
+              </h1>
+            </>
+          )}
 
-          {/* Search form */}
           <form method="GET" className="search-premium">
-            <svg
-              width="16" height="16" viewBox="0 0 16 16" fill="none"
-              className="text-[var(--muted-foreground)] shrink-0"
-            >
+            <svg width="16" height="16" viewBox="0 0 16 16" fill="none" className="text-[var(--muted-foreground)] shrink-0">
               <circle cx="7" cy="7" r="4.5" stroke="currentColor" strokeWidth="1.5" />
               <path d="M10.5 10.5L13.5 13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
             </svg>
@@ -71,14 +87,10 @@ export default async function PesquisaPage({ searchParams }: Props) {
               type="text"
               defaultValue={q}
               placeholder="Pesquisa ferramentas de IA…"
-              autoFocus
+              autoFocus={!q}
               autoComplete="off"
             />
-            <button
-              type="submit"
-              className="btn-accent"
-              style={{ padding: '9px 18px', fontSize: '13px', borderRadius: '8px' }}
-            >
+            <button type="submit" className="btn-accent" style={{ padding: '9px 18px', fontSize: '13px', borderRadius: '8px' }}>
               Pesquisar
             </button>
           </form>
@@ -94,44 +106,42 @@ export default async function PesquisaPage({ searchParams }: Props) {
               <strong className="text-[var(--foreground)]">&ldquo;{q}&rdquo;</strong>
             </p>
             <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
-              {resultados.map(f => (
-                <ToolCard key={f.id} ferramenta={f as any} />
-              ))}
+              {resultados.map(f => <ToolCard key={f.id} ferramenta={f as any} />)}
             </div>
           </>
         ) : q ? (
+          /* No results */
           <div className="text-center py-20">
             <p className="text-4xl mb-4">🔍</p>
             <p className="font-semibold text-[var(--foreground)] text-lg mb-2">
               Nenhum resultado para &ldquo;{q}&rdquo;
             </p>
             <p className="text-sm text-[var(--muted-foreground)] mb-8 max-w-sm mx-auto">
-              Tenta pesquisar de outra forma ou explora por categoria.
+              Tenta uma pesquisa diferente ou explora por categoria.
             </p>
             <div className="flex flex-wrap gap-3 justify-center">
               <Link href="/categorias" className="btn-primary" style={{ fontSize: '13.5px' }}>
                 Explorar categorias →
               </Link>
-              <Link href="/" className="btn-outline" style={{ fontSize: '13.5px' }}>
-                Voltar ao início
+              <Link href="/pesquisa" className="btn-outline" style={{ fontSize: '13.5px' }}>
+                Limpar pesquisa
               </Link>
             </div>
           </div>
         ) : (
+          /* Empty — show suggestions */
           <div className="text-center py-20">
             <p className="text-4xl mb-4">✨</p>
-            <p className="font-semibold text-[var(--foreground)] mb-2">
-              O que procuras?
-            </p>
+            <p className="font-semibold text-[var(--foreground)] mb-2">O que procuras?</p>
             <p className="text-sm text-[var(--muted-foreground)] mb-8">
               Começa a escrever para encontrar a ferramenta perfeita.
             </p>
-            <div className="flex flex-wrap gap-2 justify-center max-w-sm mx-auto">
-              {['ChatGPT', 'Midjourney', 'Copilot', 'Perplexity', 'Gamma', 'Notion AI'].map(t => (
+            <div className="flex flex-wrap gap-2 justify-center max-w-xs mx-auto">
+              {SUGESTOES.map(t => (
                 <Link
                   key={t}
                   href={`/pesquisa?q=${encodeURIComponent(t)}`}
-                  className="text-xs font-medium px-3 py-1.5 rounded-full transition-colors border hover:border-[var(--border-strong)] hover:text-[var(--foreground)]"
+                  className="text-xs font-medium px-3 py-1.5 rounded-full transition-colors"
                   style={{
                     background: 'var(--surface)',
                     color: 'var(--muted-foreground)',
