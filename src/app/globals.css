@@ -1,309 +1,220 @@
-@import url('https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@700;800;900&family=Inter:wght@400;500&display=swap');
-@import url('https://fonts.googleapis.com/css2?family=Syne:wght@400;500;600;700;800&family=Plus+Jakarta+Sans:wght@300;400;500;600&display=swap');
+@import url('https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap');
 
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
 
 :root {
-  --font-plus-jakarta: 'Plus Jakarta Sans', system-ui, sans-serif;
-  --font-syne: 'Syne', system-ui, sans-serif;
-  --accent: #00ff88;
+  --accent: #16a34a;
+  --accent-hover: #15803d;
+  --accent-light: #f0fdf4;
+  --accent-mid: #dcfce7;
+  --text-primary: #0a2540;
+  --text-secondary: #425466;
+  --text-muted: #8898aa;
+  --bg: #ffffff;
+  --bg-subtle: #f6f9fc;
+  --bg-muted: #f1f5f9;
+  --border: #e3e8ee;
+  --border-strong: #c1c9d2;
+  --radius: 12px;
+  --shadow-sm: 0 2px 5px -1px rgba(50,50,93,0.1), 0 1px 3px -1px rgba(0,0,0,0.07);
+  --shadow-md: 0 6px 20px -5px rgba(50,50,93,0.12), 0 3px 8px -3px rgba(0,0,0,0.07);
+  --shadow-lg: 0 13px 40px -5px rgba(50,50,93,0.15), 0 8px 16px -8px rgba(0,0,0,0.08);
 }
 
 @layer base {
   * { box-sizing: border-box; }
-  html {
-    scroll-behavior: smooth;
-    -webkit-font-smoothing: antialiased;
-  }
+  html { scroll-behavior: smooth; -webkit-font-smoothing: antialiased; }
   body {
-    background: #f5f4f0;
-    color: #111111;
-    font-family: 'Inter', var(--font-plus-jakarta), system-ui, sans-serif;
+    background: var(--bg);
+    color: var(--text-primary);
+    font-family: 'Inter', system-ui, sans-serif;
   }
-  ::selection {
-    background: rgba(0, 255, 136, 0.2);
-    color: #00ff88;
-  }
-}
-
-.font-grotesk {
-  font-family: 'Space Grotesk', system-ui, sans-serif;
+  ::selection { background: var(--accent-mid); color: var(--text-primary); }
 }
 
 @layer components {
 
-  /* ── V2 Dark Design System ─────────────────────── */
+  /* ── Navbar ──────────────────────────────────────── */
+  .navbar {
+    position: fixed;
+    top: 0; left: 0; right: 0;
+    z-index: 50;
+    background: rgba(255,255,255,0.92);
+    backdrop-filter: blur(12px);
+    -webkit-backdrop-filter: blur(12px);
+    border-bottom: 1px solid var(--border);
+  }
 
-  .hero-v2 {
-    background: #0a0a0a;
+  /* ── Hero — Stripe animated gradient ─────────────── */
+  .hero-stripe {
     position: relative;
+    overflow: hidden;
+    background: #f6f9fc;
+    padding: 130px 0 90px;
   }
-  .hero-v2::before {
-    content: '';
-    position: absolute;
-    top: 0;
-    right: 0;
-    width: 60%;
-    height: 70%;
-    background: radial-gradient(ellipse at top right, rgba(0, 255, 136, 0.08) 0%, transparent 70%);
-    pointer-events: none;
-    z-index: 0;
-  }
-  /* Film grain texture — inspired by Oryzo AI's cinematic depth */
-  .hero-v2::after {
+  .hero-stripe::before {
     content: '';
     position: absolute;
     inset: 0;
+    background:
+      radial-gradient(ellipse 80% 70% at 15% -20%, rgba(22,163,74,0.13) 0%, transparent 55%),
+      radial-gradient(ellipse 70% 60% at 85% 110%, rgba(16,185,129,0.10) 0%, transparent 55%),
+      radial-gradient(ellipse 50% 40% at 50% 60%, rgba(134,239,172,0.07) 0%, transparent 50%);
+    animation: hero-glow 9s ease-in-out infinite alternate;
     pointer-events: none;
     z-index: 0;
-    opacity: 0.04;
-    background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='300' height='300'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.72' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='300' height='300' filter='url(%23n)'/%3E%3C/svg%3E");
-    background-repeat: repeat;
-    background-size: 200px 200px;
+  }
+  @keyframes hero-glow {
+    0%   { transform: scale(1)    rotate(0deg);   opacity: 0.7; }
+    100% { transform: scale(1.08) rotate(2deg);   opacity: 1;   }
   }
 
-  .cat-card-v2 {
-    background: #111;
-    border: 1px solid #1a1a1a;
+  /* ── Stat numbers ────────────────────────────────── */
+  .stat-number {
+    font-size: 2.25rem;
+    font-weight: 800;
+    color: var(--text-primary);
+    letter-spacing: -0.02em;
+    line-height: 1;
+  }
+
+  /* ── Feature / category cards (Stripe "solutions" style) */
+  .feature-card {
+    background: white;
+    border: 1px solid var(--border);
     border-radius: 16px;
-    padding: 24px;
-    transition: all 300ms ease;
-    cursor: pointer;
-  }
-  .cat-card-v2:hover {
-    background: radial-gradient(ellipse at 50% 0%, rgba(0, 255, 136, 0.06) 0%, #151515 65%);
-    border-color: rgba(0, 255, 136, 0.3);
-    transform: translateY(-4px);
-    box-shadow: 0 20px 40px rgba(0, 0, 0, 0.5), 0 0 0 1px rgba(0, 255, 136, 0.05) inset;
-  }
-
-  .tool-card-v2 {
-    background: #0f0f0f;
-    border: 1px solid #1a1a1a;
-    border-radius: 12px;
-    padding: 20px;
+    padding: 28px;
     transition: all 200ms ease;
-  }
-  .tool-card-v2:hover {
-    border-color: rgba(0, 255, 136, 0.2);
-    transform: translateY(-2px);
-  }
-
-  /* ── Light section cards (Explorar + Em Destaque) ── */
-
-  .cat-card-light {
-    background: #ffffff;
-    border: 1px solid #e8e6e0;
-    border-radius: 16px;
-    padding: 24px;
-    transition: all 300ms ease;
-    cursor: pointer;
     position: relative;
     overflow: hidden;
+    cursor: pointer;
   }
-  .cat-card-light:hover {
-    border-color: var(--cat-color, rgba(0, 0, 0, 0.15));
-    transform: translateY(-4px);
-    box-shadow: 0 16px 36px rgba(0, 0, 0, 0.09);
+  .feature-card::before {
+    content: '';
+    position: absolute;
+    top: 0; left: 0; right: 0;
+    height: 3px;
+    background: var(--cat-color, var(--accent));
+    border-radius: 16px 16px 0 0;
+  }
+  .feature-card:hover {
+    box-shadow: var(--shadow-lg);
+    transform: translateY(-3px);
+    border-color: transparent;
   }
 
-  .tool-card-light {
-    background: #ffffff;
-    border: 1px solid #e8e6e0;
-    border-radius: 12px;
+  /* ── Tool cards ──────────────────────────────────── */
+  .tool-card-clean {
+    background: white;
+    border: 1px solid var(--border);
+    border-radius: var(--radius);
     padding: 20px;
     transition: all 200ms ease;
   }
-  .tool-card-light:hover {
-    border-color: #d4d0c8;
-    box-shadow: 0 8px 24px rgba(0, 0, 0, 0.07);
-    transform: translateY(-2px);
+  .tool-card-clean:hover {
+    border-color: var(--border-strong);
+    box-shadow: var(--shadow-md);
+    transform: translateY(-1px);
   }
 
-  .tag-pill {
-    background: rgba(0, 255, 136, 0.08);
-    border: 1px solid rgba(0, 255, 136, 0.2);
-    color: #00ff88;
-    font-size: 11px;
-    padding: 4px 10px;
-    border-radius: 100px;
+  /* ── Buttons ─────────────────────────────────────── */
+  .btn-primary-clean {
+    background: var(--text-primary);
+    color: white;
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 150ms;
     display: inline-flex;
     align-items: center;
+    gap: 6px;
+    letter-spacing: -0.01em;
   }
+  .btn-primary-clean:hover { background: #1a3652; transform: translateY(-1px); box-shadow: var(--shadow-sm); }
 
-  .btn-accent {
-    background: #00ff88;
-    color: #080808;
-    font-weight: 700;
-    padding: 12px 24px;
+  .btn-accent-clean {
+    background: var(--accent);
+    color: white;
+    padding: 11px 22px;
     border-radius: 8px;
-    transition: background 200ms ease;
+    font-size: 14px;
+    font-weight: 600;
+    transition: all 150ms;
     display: inline-flex;
     align-items: center;
     justify-content: center;
-    position: relative;
-    overflow: hidden;
+    gap: 6px;
+    letter-spacing: -0.01em;
   }
-  .btn-accent::after {
-    content: '';
-    position: absolute;
-    top: 0;
-    left: -100%;
-    width: 55%;
-    height: 100%;
-    background: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.35), transparent);
-    transform: skewX(-20deg);
-    transition: left 0s;
+  .btn-accent-clean:hover { background: var(--accent-hover); transform: translateY(-1px); box-shadow: var(--shadow-sm); }
+
+  .btn-outline-clean {
+    background: white;
+    color: var(--text-primary);
+    border: 1px solid var(--border-strong);
+    padding: 11px 22px;
+    border-radius: 8px;
+    font-size: 14px;
+    font-weight: 500;
+    transition: all 150ms;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    gap: 6px;
   }
-  .btn-accent:hover {
-    background: #00cc6e;
-  }
-  .btn-accent:hover::after {
-    left: 160%;
-    transition: left 0.55s ease;
+  .btn-outline-clean:hover { background: var(--bg-subtle); border-color: var(--text-muted); }
+
+  /* ── Section label (like Stripe's small caps labels) */
+  .section-label {
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.08em;
+    text-transform: uppercase;
+    color: var(--accent);
   }
 
-  .marquee-container {
-    overflow: hidden;
-    white-space: nowrap;
-  }
-  .marquee-track {
-    display: inline-block;
-    animation: marquee 20s linear infinite;
-  }
+  /* ── Price badges ────────────────────────────────── */
+  .badge-free     { background: #f0fdf4; color: #16a34a; border: 1px solid #bbf7d0; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 100px; display: inline-flex; align-items: center; }
+  .badge-paid     { background: #fffbeb; color: #d97706; border: 1px solid #fde68a; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 100px; display: inline-flex; align-items: center; }
+  .badge-freemium { background: #eff6ff; color: #3b82f6; border: 1px solid #bfdbfe; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 100px; display: inline-flex; align-items: center; }
+  .badge-featured { background: #fefce8; color: #ca8a04; border: 1px solid #fde047; font-size: 11px; font-weight: 600; padding: 2px 8px; border-radius: 100px; display: inline-flex; align-items: center; }
 
-  /* ── Legacy Design System (other pages) ────────── */
+  /* ── Marquee ─────────────────────────────────────── */
+  .marquee-wrap  { overflow: hidden; background: var(--text-primary); padding: 11px 0; }
+  .marquee-inner { display: inline-block; white-space: nowrap; animation: marquee-scroll 28s linear infinite; }
 
+  /* ── Legacy classes (other pages) ───────────────── */
   .hero-section {
     @apply bg-slate-900;
     background-image:
-      radial-gradient(ellipse 80% 50% at 80% 10%, rgba(16, 185, 129, 0.18) 0%, transparent 60%),
-      radial-gradient(ellipse 60% 40% at 20% 90%, rgba(99, 102, 241, 0.12) 0%, transparent 55%);
+      radial-gradient(ellipse 80% 50% at 80% 10%, rgba(16,185,129,0.18) 0%, transparent 60%),
+      radial-gradient(ellipse 60% 40% at 20% 90%, rgba(99,102,241,0.12) 0%, transparent 55%);
   }
-
-  .cat-card {
-    @apply relative bg-white border border-slate-200 rounded-xl p-4 pt-5
-           hover:shadow-md hover:-translate-y-0.5
-           transition-all duration-200 overflow-hidden cursor-pointer;
-  }
-  .cat-card:hover {
-    border-color: rgba(0, 0, 0, 0.12);
-  }
-
-  .card-ferramenta {
-    @apply bg-white border border-slate-200 rounded-xl p-4
-           hover:border-slate-300 hover:shadow-sm
-           transition-all duration-200 relative;
-  }
-  .card-ferramenta:hover {
-    transform: translateY(-1px);
-  }
-  .card-ferramenta-destaque {
-    @apply bg-white border-2 border-emerald-400 rounded-xl p-4
-           hover:shadow-md
-           transition-all duration-200 relative;
-  }
-  .card-ferramenta-destaque:hover {
-    transform: translateY(-1px);
-    border-color: #34d399;
-  }
-
-  .badge-preco {
-    @apply inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full;
-  }
+  .cat-card { @apply relative bg-white border border-slate-200 rounded-xl p-4 pt-5 hover:shadow-md hover:-translate-y-0.5 transition-all duration-200 overflow-hidden cursor-pointer; }
+  .cat-card:hover { border-color: rgba(0,0,0,0.12); }
+  .card-ferramenta { @apply bg-white border border-slate-200 rounded-xl p-4 hover:border-slate-300 hover:shadow-sm transition-all duration-200 relative; }
+  .card-ferramenta:hover { transform: translateY(-1px); }
+  .card-ferramenta-destaque { @apply bg-white border-2 border-emerald-400 rounded-xl p-4 hover:shadow-md transition-all duration-200 relative; }
+  .card-ferramenta-destaque:hover { transform: translateY(-1px); border-color: #34d399; }
+  .badge-preco    { @apply inline-flex items-center text-xs font-medium px-2 py-0.5 rounded-full; }
   .badge-gratuito { @apply bg-green-100 text-green-800; }
-  .badge-freemium { @apply bg-blue-100 text-blue-800; }
+  .badge-freemium-legacy { @apply bg-blue-100 text-blue-800; }
   .badge-pago     { @apply bg-amber-100 text-amber-800; }
   .badge-contacto { @apply bg-slate-100 text-slate-700; }
-
-  .btn-primary {
-    @apply bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium
-           hover:bg-slate-800 active:scale-95
-           transition-all duration-150;
-  }
-  .btn-outline {
-    @apply border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium
-           hover:bg-slate-50 hover:border-slate-400 active:scale-95
-           transition-all duration-150;
-  }
-  .input-search {
-    @apply w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm
-           placeholder:text-slate-400
-           focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent;
-  }
+  .btn-primary    { @apply bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 active:scale-95 transition-all duration-150; }
+  .btn-outline    { @apply border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 hover:border-slate-400 active:scale-95 transition-all duration-150; }
+  .input-search   { @apply w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent; }
 }
 
-/* ── Cinematic Text Reveal (Oryzo-inspired) ────────────────── */
-/*
- * Each h1 line sits inside .reveal-clip (overflow:hidden).
- * The inner .reveal-text slides up from 110% on page load.
- * Staggered via inline animation-delay on each span.
- */
-.reveal-clip {
-  display: block;
-  overflow: hidden;
-  /* tiny bottom padding so descenders aren't clipped during animation */
-  padding-bottom: 0.08em;
-}
-.reveal-text {
-  display: block;
-  animation: slide-up-reveal 1s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-@keyframes slide-up-reveal {
-  from { transform: translateY(108%); }
-  to   { transform: translateY(0); }
-}
-
-/* Fade-up for non-clip elements (badge, subtitle, form, stats) */
-.fade-in-hero {
-  animation: fade-in-hero 0.7s cubic-bezier(0.16, 1, 0.3, 1) both;
-}
-@keyframes fade-in-hero {
-  from { opacity: 0; transform: translateY(18px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-/* Growing accent line below "IA." */
-.accent-grow-line {
-  display: block;
-  height: 2px;
-  width: 64px;
-  background: #00ff88;
-  transform-origin: left center;
-  animation: grow-x 0.9s cubic-bezier(0.16, 1, 0.3, 1) both;
-  margin-top: 20px;
-}
-@keyframes grow-x {
-  from { transform: scaleX(0); opacity: 0; }
-  to   { transform: scaleX(1); opacity: 1; }
-}
-
-/* Scroll-driven section reveals (Chrome 115+, Firefox 110+) */
-@supports (animation-timeline: view()) {
-  .scroll-reveal {
-    animation: scroll-fade-in linear both;
-    animation-timeline: view();
-    animation-range: entry 0% entry 28%;
-  }
-}
-@keyframes scroll-fade-in {
-  from { opacity: 0; transform: translateY(32px); }
-  to   { opacity: 1; transform: translateY(0); }
-}
-
-@keyframes marquee {
+@keyframes marquee-scroll {
   from { transform: translateX(0); }
   to   { transform: translateX(-50%); }
 }
 
-.animate-delay-100 { animation-delay: 100ms; }
-.animate-delay-200 { animation-delay: 200ms; }
-.animate-delay-300 { animation-delay: 300ms; }
-.animate-delay-400 { animation-delay: 400ms; }
-
 ::-webkit-scrollbar       { width: 6px; }
 ::-webkit-scrollbar-track { background: transparent; }
-::-webkit-scrollbar-thumb { background: #c8c4bc; border-radius: 3px; }
-::-webkit-scrollbar-thumb:hover { background: #a09c94; }
+::-webkit-scrollbar-thumb { background: var(--border-strong); border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: var(--text-muted); }

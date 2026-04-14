@@ -1,57 +1,76 @@
 import Link from 'next/link'
 import { LUSO_AUDIENCE_LINE } from '@/lib/site-copy'
 
+const NAV = [
+  {
+    title: 'Explorar',
+    links: [
+      { href: '/categorias',          label: 'Todas as categorias' },
+      { href: '/novidades',           label: 'Novidades'           },
+      { href: '/destaque',            label: 'Em destaque'         },
+      { href: '/gratuitas',           label: 'Ferramentas grátis'  },
+      { href: '/pesquisa',            label: 'Pesquisa avançada'   },
+    ],
+  },
+  {
+    title: 'Categorias',
+    links: [
+      { href: '/categoria/escrita',   label: '✍️ Escrita e Texto'  },
+      { href: '/categoria/imagem',    label: '🎨 Imagem e Design'  },
+      { href: '/categoria/codigo',    label: '💻 Código e Dev'     },
+      { href: '/categoria/negocios',  label: '📈 Negócios'         },
+      { href: '/categoria/audio',     label: '🎵 Áudio e Voz'      },
+    ],
+  },
+  {
+    title: 'Site',
+    links: [
+      { href: '/submeter',            label: 'Submeter ferramenta' },
+      { href: '/destaque',            label: 'Anunciar / Destacar' },
+      { href: '/newsletter',          label: 'Newsletter'          },
+      { href: '/sobre',               label: 'Sobre nós'           },
+      { href: '/afiliados',           label: 'Afiliados'           },
+    ],
+  },
+]
+
 export function Footer() {
   return (
-    <footer style={{ background: '#050505', borderTop: '1px solid #1a1a1a' }}>
-      <div
-        className="max-w-7xl mx-auto px-6 sm:px-10"
-        style={{ paddingTop: '60px', paddingBottom: '60px' }}
-      >
-        <div className="grid grid-cols-1 md:grid-cols-3 gap-10 md:gap-16 mb-12">
+    <footer style={{ background: '#0a2540', borderTop: '1px solid rgba(255,255,255,0.06)' }}>
+      <div className="max-w-6xl mx-auto px-6 py-14">
 
-          {/* Col 1: Logo + tagline */}
-          <div>
-            <Link href="/" className="inline-flex items-center gap-2 mb-4">
-              <span
-                className="font-grotesk font-bold"
-                style={{ color: '#00ff88', fontSize: '1.5rem', letterSpacing: '-0.03em' }}
-              >
-                FA.
-              </span>
-              <span
-                className="font-grotesk font-bold"
-                style={{ color: 'rgba(240,240,240,0.6)', fontSize: '14px' }}
-              >
-                FerramentasAI
-              </span>
+        {/* Top: logo + nav columns */}
+        <div className="grid grid-cols-2 md:grid-cols-4 gap-10 mb-12">
+
+          {/* Brand column */}
+          <div className="col-span-2 md:col-span-1">
+            <Link href="/" className="inline-flex items-center gap-0.5 mb-4">
+              <span className="font-bold text-white text-base tracking-tight">ferramentas</span>
+              <span className="font-bold text-green-400 text-base tracking-tight">ai</span>
             </Link>
-            <p style={{ color: 'rgba(240,240,240,0.25)', fontSize: '13px', lineHeight: 1.7, maxWidth: '260px' }}>
+            <p className="text-sm leading-relaxed" style={{ color: '#8898aa' }}>
               O melhor diretório de ferramentas de IA em português. Curado para {LUSO_AUDIENCE_LINE}.
             </p>
           </div>
 
-          {/* Col 2: Links */}
-          <div className="grid grid-cols-2 gap-8">
-            <div>
+          {/* Nav columns */}
+          {NAV.map((col) => (
+            <div key={col.title}>
               <p
-                className="font-grotesk font-bold uppercase mb-4"
-                style={{ color: 'rgba(240,240,240,0.5)', fontSize: '10px', letterSpacing: '0.15em' }}
+                className="text-xs font-semibold uppercase tracking-widest mb-4"
+                style={{ color: 'rgba(255,255,255,0.35)' }}
               >
-                Explorar
+                {col.title}
               </p>
-              <ul className="space-y-3">
-                {[
-                  { href: '/categorias', label: 'Todas as categorias' },
-                  { href: '/novidades', label: 'Novidades' },
-                  { href: '/destaque', label: 'Em destaque' },
-                  { href: '/gratuitas', label: 'Ferramentas grátis' },
-                ].map(({ href, label }) => (
+              <ul className="space-y-2.5">
+                {col.links.map(({ href, label }) => (
                   <li key={href}>
                     <Link
                       href={href}
-                      className="transition-colors hover:text-white"
-                      style={{ color: 'rgba(240,240,240,0.25)', fontSize: '13px' }}
+                      className="text-sm transition-colors"
+                      style={{ color: '#8898aa' }}
+                      onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
+                      onMouseLeave={e => (e.currentTarget.style.color = '#8898aa')}
                     >
                       {label}
                     </Link>
@@ -59,98 +78,30 @@ export function Footer() {
                 ))}
               </ul>
             </div>
-            <div>
-              <p
-                className="font-grotesk font-bold uppercase mb-4"
-                style={{ color: 'rgba(240,240,240,0.5)', fontSize: '10px', letterSpacing: '0.15em' }}
-              >
-                Site
-              </p>
-              <ul className="space-y-3">
-                {[
-                  { href: '/submeter', label: 'Submeter ferramenta' },
-                  { href: '/destaque', label: 'Anunciar / Destacar' },
-                  { href: '/newsletter', label: 'Newsletter' },
-                  { href: '/sobre', label: 'Sobre nós' },
-                ].map(({ href, label }) => (
-                  <li key={href}>
-                    <Link
-                      href={href}
-                      className="transition-colors hover:text-white"
-                      style={{ color: 'rgba(240,240,240,0.25)', fontSize: '13px' }}
-                    >
-                      {label}
-                    </Link>
-                  </li>
-                ))}
-              </ul>
-            </div>
-          </div>
-
-          {/* Col 3: Newsletter CTA */}
-          <div>
-            <p
-              className="font-grotesk font-bold uppercase mb-2"
-              style={{ color: 'rgba(240,240,240,0.5)', fontSize: '10px', letterSpacing: '0.15em' }}
-            >
-              Newsletter
-            </p>
-            <p
-              className="font-grotesk font-bold text-white mb-1"
-              style={{ fontSize: '1rem' }}
-            >
-              Novidades todas as semanas
-            </p>
-            <p style={{ color: 'rgba(240,240,240,0.3)', fontSize: '13px', marginBottom: '16px' }}>
-              As melhores ferramentas novas, em português, sem spam.
-            </p>
-            <form action="/api/newsletter" method="POST" className="flex flex-col gap-2">
-              <input
-                name="email"
-                type="email"
-                required
-                placeholder="o.teu@email.com"
-                style={{
-                  background: '#111',
-                  border: '1px solid #2a2a2a',
-                  borderRadius: '8px',
-                  padding: '10px 14px',
-                  fontSize: '13px',
-                  color: '#f0f0f0',
-                  outline: 'none',
-                  width: '100%',
-                }}
-              />
-              <button
-                type="submit"
-                className="btn-accent text-sm w-full"
-                style={{ padding: '10px 16px', borderRadius: '8px' }}
-              >
-                Subscrever →
-              </button>
-            </form>
-          </div>
+          ))}
         </div>
 
-        {/* Bottom bar */}
+        {/* Bottom bar — like Stripe's copyright row */}
         <div
-          className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-6"
-          style={{ borderTop: '1px solid #141414' }}
+          className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-8"
+          style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
         >
-          <p style={{ color: 'rgba(240,240,240,0.2)', fontSize: '12px' }}>
-            © {new Date().getFullYear()} FerramentasAI — Feito em Portugal 🇵🇹
+          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>
+            © {new Date().getFullYear()} FerramentasAI · Feito em Portugal 🇵🇹
           </p>
           <div className="flex gap-5">
             {[
               { href: '/privacidade', label: 'Privacidade' },
-              { href: '/termos', label: 'Termos' },
-              { href: '/afiliados', label: 'Afiliados' },
+              { href: '/termos',      label: 'Termos'      },
+              { href: '/afiliados',   label: 'Afiliados'   },
             ].map(({ href, label }) => (
               <Link
                 key={href}
                 href={href}
-                className="transition-colors hover:text-white"
-                style={{ color: 'rgba(240,240,240,0.2)', fontSize: '12px' }}
+                className="text-xs transition-colors"
+                style={{ color: 'rgba(255,255,255,0.2)' }}
+                onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.5)')}
+                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
               >
                 {label}
               </Link>

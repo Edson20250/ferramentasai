@@ -42,211 +42,133 @@ function getAvatarColor(name: string): string {
     '#3b82f6', '#8b5cf6', '#ef4444', '#06b6d4',
     '#84cc16', '#f97316',
   ]
-  const hash = name.split('').reduce((acc, char) => acc + char.charCodeAt(0), 0)
+  const hash = name.split('').reduce((acc, c) => acc + c.charCodeAt(0), 0)
   return colors[hash % colors.length]
 }
 
-const MARQUEE_TEXT = 'FERRAMENTAS DE IA · EM PORTUGUÊS · '
+function badgeClass(precificacao: string): string {
+  switch (precificacao) {
+    case 'GRATUITO': return 'badge-free'
+    case 'FREEMIUM': return 'badge-freemium'
+    case 'PAGO':     return 'badge-paid'
+    default:         return 'badge-freemium'
+  }
+}
+
+const MARQUEE_TEXT = 'FERRAMENTAS DE IA  ·  EM PORTUGUÊS  ·  CPLP  ·  ANGOLA  ·  BRASIL  ·  PORTUGAL  ·  MOÇAMBIQUE  ·  '
 
 export default async function HomePage() {
   const { categorias, ferramentasDestaque, totalFerramentas } = await getDados()
-  const heroCategories = categorias.slice(0, 4)
 
   return (
-    <div style={{ background: '#f5f4f0', minHeight: '100vh' }}>
+    <div className="bg-white">
 
-      {/* ── HERO ─────────────────────────────────────── */}
-      <section className="hero-v2">
-        <div
-          className="relative z-[1] max-w-7xl mx-auto px-6 sm:px-10"
-          style={{ paddingTop: '64px', paddingBottom: '64px' }}
-        >
-          <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-20 items-center">
+      {/* ── HERO ─── Stripe-style animated gradient ──────── */}
+      <section className="hero-stripe">
+        <div className="relative z-[1] max-w-5xl mx-auto px-6 text-center">
 
-            {/* Left — 60% */}
-            <div className="lg:col-span-3">
-              {/* Badge */}
-              <p
-                className="font-grotesk font-bold uppercase mb-6 fade-in-hero"
-                style={{ color: '#00ff88', fontSize: '11px', letterSpacing: '0.3em', animationDelay: '0ms' }}
-              >
-                — O DIRETÓRIO
-              </p>
-
-              {/* Cinematic text reveal — each line slides up from its clip container */}
-              <h1 className="font-grotesk mb-0" style={{ fontWeight: 900 }}>
-                <span
-                  className="reveal-clip"
-                  style={{ fontSize: 'clamp(3.5rem, 9vw, 8.5rem)', lineHeight: 0.92 }}
-                >
-                  <span className="reveal-text text-white" style={{ animationDelay: '80ms' }}>
-                    DESCOBRE
-                  </span>
-                </span>
-                <span
-                  className="reveal-clip"
-                  style={{ fontSize: 'clamp(3.5rem, 9vw, 8.5rem)', lineHeight: 0.92 }}
-                >
-                  <span className="reveal-text text-white" style={{ animationDelay: '240ms' }}>
-                    A MELHOR
-                  </span>
-                </span>
-                <span
-                  className="reveal-clip"
-                  style={{ fontSize: 'clamp(3.5rem, 9vw, 8.5rem)', lineHeight: 0.92 }}
-                >
-                  <span className="reveal-text" style={{ color: '#00ff88', animationDelay: '400ms' }}>
-                    IA.
-                  </span>
-                </span>
-              </h1>
-
-              {/* Accent line that grows after "IA." */}
-              <span className="accent-grow-line" style={{ animationDelay: '850ms' }} />
-
-              <p
-                className="leading-relaxed mb-10 fade-in-hero"
-                style={{
-                  color: 'rgba(240,240,240,0.4)',
-                  fontSize: '15px',
-                  maxWidth: '400px',
-                  animationDelay: '650ms',
-                  marginTop: '32px',
-                }}
-              >
-                Descobre e compara as melhores ferramentas de inteligência artificial. Curadas para{' '}
-                {LUSO_AUDIENCE_LINE}.
-              </p>
-
-              <form
-                action="/pesquisa"
-                method="GET"
-                className="flex gap-2 fade-in-hero"
-                style={{ maxWidth: '480px', animationDelay: '800ms' }}
-              >
-                <div className="relative flex-1">
-                  <span
-                    className="absolute left-3.5 top-1/2 -translate-y-1/2 select-none"
-                    style={{ color: 'rgba(240,240,240,0.25)', fontSize: '14px' }}
-                  >
-                    🔍
-                  </span>
-                  <input
-                    name="q"
-                    type="text"
-                    placeholder="Pesquisa uma ferramenta de IA…"
-                    style={{
-                      width: '100%',
-                      background: '#111',
-                      border: '1px solid #2a2a2a',
-                      borderRadius: '10px',
-                      paddingLeft: '38px',
-                      paddingRight: '16px',
-                      paddingTop: '14px',
-                      paddingBottom: '14px',
-                      fontSize: '14px',
-                      color: '#f0f0f0',
-                      outline: 'none',
-                    }}
-                  />
-                </div>
-                <button
-                  type="submit"
-                  className="btn-accent text-sm whitespace-nowrap"
-                  style={{ borderRadius: '10px', padding: '14px 20px' }}
-                >
-                  Pesquisar
-                </button>
-              </form>
-
-              <div className="flex flex-wrap items-center gap-3 mt-5 fade-in-hero" style={{ animationDelay: '950ms' }}>
-                <span style={{ color: 'rgba(240,240,240,0.2)', fontSize: '11px' }}>Popular:</span>
-                {['ChatGPT', 'Midjourney', 'Copilot', 'Perplexity'].map((t) => (
-                  <Link
-                    key={t}
-                    href={`/pesquisa?q=${encodeURIComponent(t)}`}
-                    className="transition-colors"
-                    style={{ color: 'rgba(240,240,240,0.25)', fontSize: '12px' }}
-                  >
-                    {t}
-                  </Link>
-                ))}
-              </div>
-
-              <div
-                className="flex flex-wrap gap-6 mt-10 pt-8 fade-in-hero"
-                style={{ borderTop: '1px solid #1a1a1a', animationDelay: '1050ms' }}
-              >
-                {[
-                  { label: `${totalFerramentas}+ ferramentas` },
-                  { label: `${categorias.length} categorias` },
-                  { label: '100% em português' },
-                  { label: 'Curadas & atualizadas' },
-                ].map(({ label }) => (
-                  <div
-                    key={label}
-                    className="flex items-center gap-2 text-sm"
-                    style={{ color: 'rgba(240,240,240,0.25)' }}
-                  >
-                    <span
-                      style={{
-                        width: '4px',
-                        height: '4px',
-                        borderRadius: '50%',
-                        background: '#00ff88',
-                        display: 'inline-block',
-                        flexShrink: 0,
-                      }}
-                    />
-                    {label}
-                  </div>
-                ))}
-              </div>
-            </div>
-
-            {/* Right — 40%: 2×2 category grid */}
-            <div className="lg:col-span-2 grid grid-cols-2 gap-3 fade-in-hero" style={{ animationDelay: '500ms' }}>
-              {heroCategories.length > 0
-                ? heroCategories.map((cat) => (
-                    <Link key={cat.id} href={`/categoria/${cat.slug}`} className="cat-card-v2 block">
-                      <div style={{ fontSize: '1.75rem', marginBottom: '12px' }}>{cat.icone}</div>
-                      <p
-                        className="font-grotesk font-bold text-white leading-snug mb-1"
-                        style={{ fontSize: '13px' }}
-                      >
-                        {cat.nome}
-                      </p>
-                      <p style={{ color: 'rgba(240,240,240,0.3)', fontSize: '11px' }}>
-                        {cat._count.ferramentas} ferramentas
-                      </p>
-                    </Link>
-                  ))
-                : [
-                    { icon: '✍️', label: 'Escrita' },
-                    { icon: '🎨', label: 'Design' },
-                    { icon: '💻', label: 'Código' },
-                    { icon: '📈', label: 'Negócios' },
-                  ].map((c) => (
-                    <div key={c.label} className="cat-card-v2">
-                      <div style={{ fontSize: '1.75rem', marginBottom: '12px' }}>{c.icon}</div>
-                      <p className="font-grotesk font-bold text-white" style={{ fontSize: '13px' }}>
-                        {c.label}
-                      </p>
-                    </div>
-                  ))}
-            </div>
+          {/* Badge pill — like Stripe's "Sessions conference" banner */}
+          <div className="inline-flex items-center gap-2 bg-white border border-[var(--border)] rounded-full px-4 py-1.5 mb-8 shadow-sm">
+            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
+            <span className="text-sm font-medium text-[var(--text-secondary)]">
+              Diretório de ferramentas de IA em Português
+            </span>
           </div>
+
+          {/* Main headline — Stripe uses italic for emphasis */}
+          <h1
+            className="font-extrabold text-[var(--text-primary)] mb-6 tracking-tight"
+            style={{ fontSize: 'clamp(2.6rem, 6vw, 4rem)', lineHeight: 1.1, letterSpacing: '-0.03em' }}
+          >
+            A melhor IA para{' '}
+            <em className="not-italic text-green-600">cada tarefa</em>
+            ,<br />em português.
+          </h1>
+
+          {/* Sub */}
+          <p
+            className="text-[var(--text-secondary)] mb-10 max-w-2xl mx-auto"
+            style={{ fontSize: '1.125rem', lineHeight: 1.7 }}
+          >
+            Descobre, compara e acede às melhores ferramentas de inteligência artificial — curadas para {LUSO_AUDIENCE_LINE}.
+          </p>
+
+          {/* CTAs — like Stripe's "Get started" + "Contact sales" */}
+          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
+            <Link href="/categorias" className="btn-primary-clean text-sm">
+              Explorar ferramentas →
+            </Link>
+            <Link href="/submeter" className="btn-outline-clean text-sm">
+              Submeter ferramenta
+            </Link>
+          </div>
+
+          {/* Search */}
+          <form
+            action="/pesquisa"
+            method="GET"
+            className="flex gap-2 max-w-lg mx-auto"
+          >
+            <div className="relative flex-1">
+              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm select-none">🔍</span>
+              <input
+                name="q"
+                type="text"
+                placeholder="ex: escrever textos, gerar imagens…"
+                className="w-full bg-white border border-[var(--border)] rounded-xl pl-9 pr-4 py-3 text-sm text-[var(--text-primary)] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent shadow-sm"
+              />
+            </div>
+            <button type="submit" className="btn-accent-clean text-sm whitespace-nowrap" style={{ borderRadius: '10px' }}>
+              Pesquisar
+            </button>
+          </form>
+
+          <p className="mt-4 text-sm text-slate-400">
+            Popular:{' '}
+            {['ChatGPT', 'Midjourney', 'Copilot', 'Perplexity'].map((t, i) => (
+              <span key={t}>
+                <Link href={`/pesquisa?q=${encodeURIComponent(t)}`} className="hover:text-green-600 transition-colors">
+                  {t}
+                </Link>
+                {i < 3 && <span className="mx-2 text-slate-300">·</span>}
+              </span>
+            ))}
+          </p>
         </div>
       </section>
 
-      {/* ── MARQUEE ──────────────────────────────────── */}
-      <div className="marquee-container" style={{ background: '#00ff88', padding: '13px 0' }}>
-        <div className="marquee-track">
-          {Array.from({ length: 12 }).map((_, i) => (
+      {/* ── STATS BAND — "The backbone of global commerce" ── */}
+      <div style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', background: '#fff' }}>
+        <div className="max-w-5xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
+          {[
+            { number: `${totalFerramentas}+`,    label: 'ferramentas curadas' },
+            { number: `${categorias.length}`,    label: 'categorias de IA' },
+            { number: '100%',                    label: 'em português' },
+            { number: 'CPLP',                    label: 'e diáspora lusófona' },
+          ].map(({ number, label }) => (
+            <div key={label}>
+              <div className="stat-number">{number}</div>
+              <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{label}</div>
+            </div>
+          ))}
+        </div>
+      </div>
+
+      {/* ── MARQUEE — "Global GDP running on Stripe" adaptation */}
+      <div className="marquee-wrap">
+        <div className="marquee-inner">
+          {Array.from({ length: 8 }).map((_, i) => (
             <span
               key={i}
-              className="font-grotesk font-bold uppercase"
-              style={{ color: '#080808', fontSize: '13px', letterSpacing: '0.05em' }}
+              style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px', fontWeight: 600, letterSpacing: '0.1em', marginRight: '0' }}
+            >
+              {MARQUEE_TEXT}
+            </span>
+          ))}
+          {Array.from({ length: 8 }).map((_, i) => (
+            <span
+              key={`d${i}`}
+              style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px', fontWeight: 600, letterSpacing: '0.1em', marginRight: '0' }}
             >
               {MARQUEE_TEXT}
             </span>
@@ -254,223 +176,229 @@ export default async function HomePage() {
         </div>
       </div>
 
-      {/* ── CATEGORIAS ───────────────────────────────── */}
-      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '80px 40px' }}>
-        <div className="flex items-baseline gap-3 mb-10 scroll-reveal">
-          <h2
-            className="font-grotesk"
-            style={{ fontWeight: 900, fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#111' }}
-          >
-            EXPLORAR
-          </h2>
-          <sup
-            className="font-grotesk font-bold"
-            style={{ color: '#00ff88', fontSize: '1rem', top: '0' }}
-          >
-            {categorias.length}
-          </sup>
-          <Link
-            href="/categorias"
-            className="ml-auto transition-colors hover:text-[#111]"
-            style={{ color: '#999', fontSize: '12px' }}
-          >
-            Ver todas →
-          </Link>
-        </div>
-
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 scroll-reveal">
-          {categorias.map((cat) => (
-            <Link
-              key={cat.id}
-              href={`/categoria/${cat.slug}`}
-              className="cat-card-light block"
-              style={{ '--cat-color': cat.cor } as React.CSSProperties}
-            >
-              <div
-                className="absolute top-0 left-0 right-0"
-                style={{ height: '3px', background: cat.cor }}
-              />
-              <div style={{ fontSize: '2rem', marginBottom: '10px', marginTop: '8px' }}>
-                {cat.icone}
-              </div>
-              <p
-                className="font-grotesk font-bold leading-snug mb-1"
-                style={{ fontSize: '13px', color: '#111' }}
+      {/* ── CATEGORIES — "Flexible solutions for every business model" */}
+      <section style={{ background: 'var(--bg-subtle)', padding: '80px 0' }}>
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex items-end justify-between mb-10">
+            <div>
+              <p className="section-label mb-2">Explorar por categoria</p>
+              <h2
+                className="font-bold text-[var(--text-primary)] tracking-tight"
+                style={{ fontSize: 'clamp(1.6rem, 3vw, 2.25rem)', letterSpacing: '-0.02em' }}
               >
-                {cat.nome}
-              </p>
-              <p style={{ color: '#999', fontSize: '11px' }}>
-                {cat._count.ferramentas} ferramentas
-              </p>
-            </Link>
-          ))}
-        </div>
-      </section>
-
-      {/* ── FERRAMENTAS EM DESTAQUE ───────────────────── */}
-      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 40px 80px' }}>
-        <div className="flex flex-col md:flex-row gap-10 md:gap-16">
-
-          {/* Vertical label */}
-          <div className="flex flex-row md:flex-col items-start gap-4 md:gap-0 shrink-0 md:w-36 scroll-reveal">
-            <div
-              style={{ width: '2px', height: '40px', background: '#00ff88' }}
-              className="hidden md:block"
-            />
-            <h2
-              className="font-grotesk"
-              style={{ fontWeight: 900, fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', lineHeight: 1, color: '#111' }}
-            >
-              EM
-              <br />
-              DESTAQUE
-            </h2>
-            <div
-              style={{ width: '2px', flex: 1, background: '#e8e6e0', minHeight: '60px' }}
-              className="hidden md:block"
-            />
+                Soluções para cada necessidade
+              </h2>
+            </div>
             <Link
-              href="/novidades"
-              className="transition-colors hover:text-[#111] md:mt-4 whitespace-nowrap"
-              style={{ color: '#999', fontSize: '12px' }}
+              href="/categorias"
+              className="text-sm font-medium text-green-600 hover:text-green-700 transition-colors whitespace-nowrap"
             >
               Ver todas →
             </Link>
           </div>
 
-          {/* Cards */}
-          <div className="flex-1 scroll-reveal">
-            {ferramentasDestaque.length === 0 ? (
-              <div
-                className="rounded-2xl p-12 text-center"
-                style={{ border: '2px dashed #e0ddd6' }}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+            {categorias.map((cat) => (
+              <Link
+                key={cat.id}
+                href={`/categoria/${cat.slug}`}
+                className="feature-card block group"
+                style={{ '--cat-color': cat.cor } as React.CSSProperties}
               >
-                <p className="text-3xl mb-3">🚀</p>
-                <p className="font-grotesk font-bold mb-4" style={{ color: '#999' }}>
-                  Em breve aqui
+                <div
+                  className="w-10 h-10 rounded-xl flex items-center justify-center text-xl mb-4"
+                  style={{ background: `${cat.cor}18` }}
+                >
+                  {cat.icone}
+                </div>
+                <p className="font-semibold text-[var(--text-primary)] text-sm mb-1 group-hover:text-green-700 transition-colors">
+                  {cat.nome}
                 </p>
-                <Link href="/submeter" className="btn-accent text-xs" style={{ padding: '8px 16px' }}>
-                  Submeter →
-                </Link>
-              </div>
-            ) : (
-              <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
-                {ferramentasDestaque.map((f) => {
-                  const avatarColor = getAvatarColor(f.nome)
-                  const initials = f.nome
-                    .split(' ')
-                    .map((w: string) => w[0])
-                    .slice(0, 2)
-                    .join('')
-                    .toUpperCase()
-                  const linkExterno = f.urlAfiliado || f.url
-
-                  return (
-                    <div key={f.id} className="tool-card-light">
-                      <div className="flex items-start gap-3">
-                        <div
-                          className="rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden"
-                          style={{
-                            width: '44px',
-                            height: '44px',
-                            background: f.logoUrl ? '#f5f4f0' : `${avatarColor}15`,
-                            border: `1.5px solid ${avatarColor}30`,
-                          }}
-                        >
-                          {f.logoUrl ? (
-                            <Image
-                              src={f.logoUrl}
-                              alt={f.nome}
-                              width={44}
-                              height={44}
-                              className="w-full h-full object-contain p-1"
-                            />
-                          ) : (
-                            <span
-                              className="font-grotesk font-bold"
-                              style={{ color: avatarColor, fontSize: '13px' }}
-                            >
-                              {initials}
-                            </span>
-                          )}
-                        </div>
-                        <div className="flex-1 min-w-0">
-                          <div className="flex items-center gap-2 flex-wrap mb-1">
-                            <Link
-                              href={`/ferramenta/${f.slug}`}
-                              className="font-grotesk font-semibold transition-colors hover:text-[#00aa55] leading-snug"
-                              style={{ fontSize: '14px', color: '#111' }}
-                            >
-                              {f.nome}
-                            </Link>
-                            {f.destaque && (
-                              <span className="tag-pill" style={{ fontSize: '10px' }}>
-                                ⭐ Destaque
-                              </span>
-                            )}
-                          </div>
-                          <p
-                            className="line-clamp-2 leading-relaxed mb-3"
-                            style={{ fontSize: '12px', color: '#777' }}
-                          >
-                            {f.descricao}
-                          </p>
-                          <div className="flex items-center justify-between gap-2">
-                            <span className="tag-pill">{labelPreco(f.precificacao)}</span>
-                            <a
-                              href={linkExterno}
-                              target="_blank"
-                              rel="noopener noreferrer"
-                              className="font-medium flex items-center gap-0.5 transition-colors hover:text-[#111]"
-                              style={{ fontSize: '12px', color: '#999' }}
-                            >
-                              Visitar →
-                            </a>
-                          </div>
-                        </div>
-                      </div>
-                    </div>
-                  )
-                })}
-              </div>
-            )}
+                <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
+                  {cat._count.ferramentas} ferramenta{cat._count.ferramentas !== 1 ? 's' : ''}
+                </p>
+                <p
+                  className="text-xs mt-3 font-medium text-green-600 opacity-0 group-hover:opacity-100 transition-opacity"
+                >
+                  Ver categoria →
+                </p>
+              </Link>
+            ))}
           </div>
         </div>
       </section>
 
-      {/* ── CTA: SUBMETER — dark closing band ───────────── */}
-      <div style={{ background: '#0a0a0a' }}>
-        <section
-          className="max-w-7xl mx-auto px-6 sm:px-10 scroll-reveal"
-          style={{ padding: '60px 40px 72px' }}
-        >
-          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+      {/* ── FEATURED TOOLS — "Powering businesses of all sizes" ── */}
+      <section style={{ background: '#fff', padding: '80px 0' }}>
+        <div className="max-w-6xl mx-auto px-6">
+          <div className="flex items-end justify-between mb-10">
             <div>
-              <p
-                className="font-grotesk font-bold text-white mb-2"
-                style={{ fontSize: '1.25rem' }}
+              <p className="section-label mb-2">Em destaque</p>
+              <h2
+                className="font-bold text-[var(--text-primary)] tracking-tight"
+                style={{ fontSize: 'clamp(1.6rem, 3vw, 2.25rem)', letterSpacing: '-0.02em' }}
               >
-                Tens uma ferramenta de IA?
-              </p>
-              <p style={{ color: 'rgba(240,240,240,0.35)', fontSize: '14px' }}>
-                Aparece em frente de milhares de profissionais lusófonos — CPLP e diáspora.
-              </p>
+                As mais populares da comunidade
+              </h2>
             </div>
-            <div className="flex gap-3 shrink-0">
-              <Link
-                href="/submeter"
-                className="text-sm font-medium px-5 py-3 rounded-lg transition-colors"
-                style={{ border: '1px solid #2a2a2a', color: 'rgba(240,240,240,0.7)' }}
-              >
-                Submeter grátis
-              </Link>
-              <Link href="/destaque" className="btn-accent text-sm" style={{ padding: '12px 20px' }}>
-                Destacar ↗
-              </Link>
-            </div>
+            <Link
+              href="/novidades"
+              className="text-sm font-medium text-green-600 hover:text-green-700 transition-colors whitespace-nowrap"
+            >
+              Ver todas →
+            </Link>
           </div>
-        </section>
-      </div>
+
+          {ferramentasDestaque.length === 0 ? (
+            <div
+              className="rounded-2xl p-16 text-center"
+              style={{ border: '2px dashed var(--border)' }}
+            >
+              <p className="text-3xl mb-3">🚀</p>
+              <p className="font-semibold text-slate-500 mb-4">Em breve aqui</p>
+              <Link href="/submeter" className="btn-accent-clean text-sm" style={{ padding: '8px 20px' }}>
+                Submeter ferramenta →
+              </Link>
+            </div>
+          ) : (
+            <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
+              {ferramentasDestaque.map((f) => {
+                const avatarColor = getAvatarColor(f.nome)
+                const initials = f.nome.split(' ').map((w: string) => w[0]).slice(0, 2).join('').toUpperCase()
+                const linkExterno = f.urlAfiliado || f.url
+
+                return (
+                  <div key={f.id} className="tool-card-clean group">
+                    <div className="flex items-start gap-3">
+                      {/* Avatar */}
+                      <div
+                        className="rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden"
+                        style={{
+                          width: '44px',
+                          height: '44px',
+                          background: f.logoUrl ? '#f6f9fc' : `${avatarColor}15`,
+                          border: `1.5px solid ${avatarColor}25`,
+                        }}
+                      >
+                        {f.logoUrl ? (
+                          <Image
+                            src={f.logoUrl}
+                            alt={f.nome}
+                            width={44}
+                            height={44}
+                            className="w-full h-full object-contain p-1"
+                          />
+                        ) : (
+                          <span className="text-sm font-bold" style={{ color: avatarColor }}>
+                            {initials}
+                          </span>
+                        )}
+                      </div>
+
+                      <div className="flex-1 min-w-0">
+                        <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                          <Link
+                            href={`/ferramenta/${f.slug}`}
+                            className="font-semibold text-sm text-[var(--text-primary)] hover:text-green-700 transition-colors leading-snug"
+                          >
+                            {f.nome}
+                          </Link>
+                          {f.destaque && <span className="badge-featured">⭐ Destaque</span>}
+                        </div>
+                        <p className="text-xs leading-relaxed mb-3 line-clamp-2" style={{ color: 'var(--text-secondary)' }}>
+                          {f.descricao}
+                        </p>
+                        <div className="flex items-center justify-between gap-2">
+                          <div className="flex items-center gap-2">
+                            <span className={badgeClass(f.precificacao)}>{labelPreco(f.precificacao)}</span>
+                            <Link
+                              href={`/categoria/${f.categoria.slug}`}
+                              className="text-xs transition-colors hover:text-green-600"
+                              style={{ color: 'var(--text-muted)' }}
+                            >
+                              {f.categoria.icone} {f.categoria.nome}
+                            </Link>
+                          </div>
+                          <a
+                            href={linkExterno}
+                            target="_blank"
+                            rel="noopener noreferrer"
+                            className="text-xs font-medium text-green-600 hover:text-green-700 transition-colors flex items-center gap-0.5"
+                          >
+                            Visitar →
+                          </a>
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+                )
+              })}
+            </div>
+          )}
+        </div>
+      </section>
+
+      {/* ── NEWSLETTER — dark section like Stripe's bottom CTA ── */}
+      <section style={{ background: 'var(--text-primary)', padding: '80px 0' }}>
+        <div className="max-w-2xl mx-auto px-6 text-center">
+          <p className="section-label mb-3" style={{ color: '#4ade80' }}>Newsletter gratuita</p>
+          <h2
+            className="font-bold text-white mb-4 tracking-tight"
+            style={{ fontSize: 'clamp(1.6rem, 3vw, 2rem)', letterSpacing: '-0.02em' }}
+          >
+            Novidades de IA todas as semanas
+          </h2>
+          <p className="mb-8" style={{ color: '#8898aa', lineHeight: 1.7 }}>
+            As melhores ferramentas novas, tutoriais e dicas de IA — em português, sem spam.
+          </p>
+          <form action="/api/newsletter" method="POST" className="flex gap-2 max-w-sm mx-auto">
+            <input
+              name="email"
+              type="email"
+              required
+              placeholder="o.teu@email.com"
+              className="flex-1 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-green-500"
+              style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }}
+            />
+            <button type="submit" className="btn-accent-clean text-sm whitespace-nowrap" style={{ padding: '10px 18px' }}>
+              Subscrever
+            </button>
+          </form>
+        </div>
+      </section>
+
+      {/* ── CTA — green section like Stripe's "Ready to get started?" */}
+      <section style={{ background: '#16a34a', padding: '72px 0' }}>
+        <div className="max-w-4xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
+          <div className="text-center md:text-left">
+            <h2
+              className="font-bold text-white mb-2 tracking-tight"
+              style={{ fontSize: '1.5rem', letterSpacing: '-0.02em' }}
+            >
+              Tens uma ferramenta de IA?
+            </h2>
+            <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '15px' }}>
+              Aparece em frente de milhares de profissionais lusófonos — CPLP e diáspora.
+            </p>
+          </div>
+          <div className="flex gap-3 shrink-0">
+            <Link
+              href="/submeter"
+              className="text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors"
+              style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.25)' }}
+            >
+              Submeter grátis
+            </Link>
+            <Link
+              href="/destaque"
+              className="text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors"
+              style={{ background: 'white', color: '#16a34a' }}
+            >
+              Destacar ↗
+            </Link>
+          </div>
+        </div>
+      </section>
 
     </div>
   )
