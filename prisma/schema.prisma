@@ -3,8 +3,11 @@ generator client {
 }
 
 datasource db {
-  provider = "postgresql"
-  url      = env("DATABASE_URL")
+  provider  = "postgresql"
+  // Pooler (Session mode) — app em produção / Vercel
+  url       = env("DATABASE_URL")
+  // Ligação direta — prisma db push, migrate, studio (evita erros com PgBouncer)
+  directUrl = env("DIRECT_URL")
 }
 
 model Categoria {

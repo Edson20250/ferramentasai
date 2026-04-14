@@ -32,7 +32,8 @@ Edita `.env.local` e preenche:
 
 | Variável | Onde encontrar |
 |---|---|
-| `DATABASE_URL` | Supabase → Settings → Database → Connection string |
+| `DATABASE_URL` | Supabase → Session pooler (user `postgres.[ref]`, host `*.pooler.supabase.com`) |
+| `DIRECT_URL` | Supabase → **Direct connection** (user `postgres`, host `db.[ref].supabase.co`) — necessária para `db push` / migrate |
 | `STRIPE_SECRET_KEY` | dashboard.stripe.com → Developers → API keys |
 | `STRIPE_PUBLISHABLE_KEY` | dashboard.stripe.com → Developers → API keys |
 | `NEXT_PUBLIC_BASE_URL` | `http://localhost:3000` em dev |
@@ -113,7 +114,8 @@ vercel
 ```
 
 Variáveis a configurar no Vercel:
-- `DATABASE_URL`
+- `DATABASE_URL` (pooler)
+- `DIRECT_URL` (ligação direta — mesmo valor que em local; o Prisma usa-a internamente)
 - `STRIPE_SECRET_KEY`
 - `STRIPE_PUBLISHABLE_KEY`
 - `STRIPE_WEBHOOK_SECRET`
