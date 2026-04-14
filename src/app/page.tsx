@@ -10,6 +10,8 @@ export const dynamic = 'force-dynamic'
 
 export const metadata: Metadata = {
   title: 'FerramentasAI — Diretório de Ferramentas de IA em Português',
+  description:
+    'Descobre, compara e acede às melhores ferramentas de inteligência artificial em português. Curado para profissionais lusófonos.',
 }
 
 async function getDados() {
@@ -55,197 +57,239 @@ function badgeClass(precificacao: string): string {
   }
 }
 
-const MARQUEE_TEXT = 'FERRAMENTAS DE IA  ·  EM PORTUGUÊS  ·  CPLP  ·  ANGOLA  ·  BRASIL  ·  PORTUGAL  ·  MOÇAMBIQUE  ·  '
+const MARQUEE_ITEMS = [
+  'Portugal', '·', 'Brasil', '·', 'Angola', '·', 'Moçambique', '·',
+  'Cabo Verde', '·', 'Timor-Leste', '·', 'São Tomé e Príncipe', '·',
+  'Guiné-Bissau', '·', 'Macau', '·', 'Diáspora Lusófona', '·',
+]
 
 export default async function HomePage() {
   const { categorias, ferramentasDestaque, totalFerramentas } = await getDados()
 
   return (
-    <div className="bg-white">
+    <div>
 
-      {/* ── HERO ─── Stripe-style animated gradient ──────── */}
-      <section className="hero-stripe">
-        <div className="relative z-[1] max-w-5xl mx-auto px-6 text-center">
+      {/* ── HERO ─────────────────────────────────────────────────── */}
+      <section className="hero-premium">
+        <div className="relative z-[1] max-w-3xl mx-auto px-5 sm:px-8 text-center">
 
-          {/* Badge pill — like Stripe's "Sessions conference" banner */}
-          <div className="inline-flex items-center gap-2 bg-white border border-[var(--border)] rounded-full px-4 py-1.5 mb-8 shadow-sm">
-            <span className="w-2 h-2 rounded-full bg-green-500 animate-pulse" />
-            <span className="text-sm font-medium text-[var(--text-secondary)]">
-              Diretório de ferramentas de IA em Português
+          {/* Eyebrow badge */}
+          <div className="inline-flex items-center gap-2 mb-8 px-4 py-2 rounded-full bg-[var(--surface-subtle)] border border-[var(--border)] text-sm">
+            <span className="inline-flex w-2 h-2 rounded-full bg-green-500 animate-pulse shrink-0" />
+            <span className="font-medium text-[var(--muted)]">
+              O diretório de IA para o mundo lusófono
             </span>
           </div>
 
-          {/* Main headline — Stripe uses italic for emphasis */}
+          {/* Headline */}
           <h1
-            className="font-extrabold text-[var(--text-primary)] mb-6 tracking-tight"
-            style={{ fontSize: 'clamp(2.6rem, 6vw, 4rem)', lineHeight: 1.1, letterSpacing: '-0.03em' }}
+            className="font-extrabold tracking-tight text-[var(--foreground)] mb-5"
+            style={{
+              fontSize: 'clamp(2.5rem, 6vw, 4rem)',
+              lineHeight: 1.08,
+              letterSpacing: '-0.035em',
+            }}
           >
-            A melhor IA para{' '}
-            <em className="not-italic text-green-600">cada tarefa</em>
-            ,<br />em português.
+            A IA que precisas,<br />
+            <span className="text-green-600">em português.</span>
           </h1>
 
-          {/* Sub */}
+          {/* Subtitle */}
           <p
-            className="text-[var(--text-secondary)] mb-10 max-w-2xl mx-auto"
-            style={{ fontSize: '1.125rem', lineHeight: 1.7 }}
+            className="text-[var(--muted)] mb-10 max-w-xl mx-auto leading-relaxed"
+            style={{ fontSize: '1.0625rem' }}
           >
-            Descobre, compara e acede às melhores ferramentas de inteligência artificial — curadas para {LUSO_AUDIENCE_LINE}.
+            Descobre, compara e acede às melhores ferramentas de inteligência artificial —
+            curadas para {LUSO_AUDIENCE_LINE}.
           </p>
 
-          {/* CTAs — like Stripe's "Get started" + "Contact sales" */}
-          <div className="flex flex-col sm:flex-row gap-3 justify-center mb-12">
-            <Link href="/categorias" className="btn-primary-clean text-sm">
-              Explorar ferramentas →
-            </Link>
-            <Link href="/submeter" className="btn-outline-clean text-sm">
-              Submeter ferramenta
-            </Link>
-          </div>
-
-          {/* Search */}
-          <form
-            action="/pesquisa"
-            method="GET"
-            className="flex gap-2 max-w-lg mx-auto"
-          >
-            <div className="relative flex-1">
-              <span className="absolute left-3.5 top-1/2 -translate-y-1/2 text-slate-400 text-sm select-none">🔍</span>
+          {/* Search — primary action */}
+          <div className="max-w-lg mx-auto mb-6">
+            <form action="/pesquisa" method="GET" className="search-premium">
+              <svg
+                width="16" height="16" viewBox="0 0 16 16" fill="none"
+                className="text-[var(--muted-foreground)] shrink-0"
+              >
+                <circle cx="7" cy="7" r="4.5" stroke="currentColor" strokeWidth="1.5" />
+                <path d="M10.5 10.5L13.5 13.5" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" />
+              </svg>
               <input
                 name="q"
                 type="text"
-                placeholder="ex: escrever textos, gerar imagens…"
-                className="w-full bg-white border border-[var(--border)] rounded-xl pl-9 pr-4 py-3 text-sm text-[var(--text-primary)] placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-green-500 focus:border-transparent shadow-sm"
+                placeholder="Pesquisar ferramentas de IA…"
+                autoComplete="off"
               />
-            </div>
-            <button type="submit" className="btn-accent-clean text-sm whitespace-nowrap" style={{ borderRadius: '10px' }}>
-              Pesquisar
-            </button>
-          </form>
+              <button type="submit" className="btn-accent" style={{ padding: '9px 18px', fontSize: '13px', borderRadius: '8px' }}>
+                Pesquisar
+              </button>
+            </form>
+          </div>
 
-          <p className="mt-4 text-sm text-slate-400">
-            Popular:{' '}
-            {['ChatGPT', 'Midjourney', 'Copilot', 'Perplexity'].map((t, i) => (
-              <span key={t}>
-                <Link href={`/pesquisa?q=${encodeURIComponent(t)}`} className="hover:text-green-600 transition-colors">
-                  {t}
+          {/* Popular searches */}
+          <div className="flex flex-wrap items-center justify-center gap-x-1 gap-y-1.5 text-sm text-[var(--muted-foreground)] mb-10">
+            <span className="mr-1">Popular:</span>
+            {[
+              { label: 'ChatGPT', q: 'ChatGPT' },
+              { label: 'Midjourney', q: 'Midjourney' },
+              { label: 'Copilot', q: 'Copilot' },
+              { label: 'Perplexity', q: 'Perplexity' },
+              { label: 'Gamma', q: 'Gamma' },
+            ].map(({ label, q }, i, arr) => (
+              <span key={q} className="inline-flex items-center gap-1">
+                <Link
+                  href={`/pesquisa?q=${encodeURIComponent(q)}`}
+                  className="hover:text-green-600 hover:underline underline-offset-2 transition-colors font-medium"
+                >
+                  {label}
                 </Link>
-                {i < 3 && <span className="mx-2 text-slate-300">·</span>}
+                {i < arr.length - 1 && <span className="text-[var(--border-strong)]">·</span>}
               </span>
             ))}
-          </p>
+          </div>
+
+          {/* Secondary CTAs */}
+          <div className="flex flex-wrap items-center justify-center gap-3">
+            <Link href="/categorias" className="btn-primary" style={{ fontSize: '13.5px' }}>
+              Explorar ferramentas
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
+            </Link>
+            <Link href="/submeter" className="btn-outline" style={{ fontSize: '13.5px' }}>
+              Submeter ferramenta
+            </Link>
+          </div>
         </div>
       </section>
 
-      {/* ── STATS BAND — "The backbone of global commerce" ── */}
-      <div style={{ borderTop: '1px solid var(--border)', borderBottom: '1px solid var(--border)', background: '#fff' }}>
-        <div className="max-w-5xl mx-auto px-6 py-10 grid grid-cols-2 md:grid-cols-4 gap-8 text-center">
-          {[
-            { number: `${totalFerramentas}+`,    label: 'ferramentas curadas' },
-            { number: `${categorias.length}`,    label: 'categorias de IA' },
-            { number: '100%',                    label: 'em português' },
-            { number: 'CPLP',                    label: 'e diáspora lusófona' },
-          ].map(({ number, label }) => (
-            <div key={label}>
-              <div className="stat-number">{number}</div>
-              <div className="text-sm mt-1" style={{ color: 'var(--text-muted)' }}>{label}</div>
-            </div>
-          ))}
+      {/* ── STATS BAND ───────────────────────────────────────────── */}
+      <div className="stats-band">
+        <div className="max-w-5xl mx-auto px-5 sm:px-8">
+          <div className="grid grid-cols-2 md:grid-cols-4 divide-x divide-[var(--border)]">
+            {[
+              { value: `${totalFerramentas}+`, label: 'ferramentas curadas' },
+              { value: `${categorias.length}`,  label: 'categorias de IA' },
+              { value: '100%',                  label: 'em português' },
+              { value: 'CPLP',                  label: 'e diáspora lusófona' },
+            ].map(({ value, label }) => (
+              <div key={label} className="stat-item text-center">
+                <span className="stat-value">{value}</span>
+                <span className="stat-label">{label}</span>
+              </div>
+            ))}
+          </div>
         </div>
       </div>
 
-      {/* ── MARQUEE — "Global GDP running on Stripe" adaptation */}
+      {/* ── MARQUEE ──────────────────────────────────────────────── */}
       <div className="marquee-wrap">
-        <div className="marquee-inner">
-          {Array.from({ length: 8 }).map((_, i) => (
+        <div className="marquee-inner" aria-hidden>
+          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
             <span
               key={i}
-              style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px', fontWeight: 600, letterSpacing: '0.1em', marginRight: '0' }}
+              className={item === '·' ? 'marquee-dot' : 'marquee-item'}
             >
-              {MARQUEE_TEXT}
+              {item}
             </span>
           ))}
-          {Array.from({ length: 8 }).map((_, i) => (
+          {[...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS, ...MARQUEE_ITEMS].map((item, i) => (
             <span
-              key={`d${i}`}
-              style={{ color: 'rgba(255,255,255,0.5)', fontSize: '12px', fontWeight: 600, letterSpacing: '0.1em', marginRight: '0' }}
+              key={`b${i}`}
+              className={item === '·' ? 'marquee-dot' : 'marquee-item'}
             >
-              {MARQUEE_TEXT}
+              {item}
             </span>
           ))}
         </div>
       </div>
 
-      {/* ── CATEGORIES — "Flexible solutions for every business model" */}
-      <section style={{ background: 'var(--bg-subtle)', padding: '80px 0' }}>
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex items-end justify-between mb-10">
+      {/* ── CATEGORIES ───────────────────────────────────────────── */}
+      <section style={{ background: 'var(--surface-subtle)', padding: '88px 0' }}>
+        <div className="max-w-6xl mx-auto px-5 sm:px-8">
+
+          {/* Section header */}
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
             <div>
-              <p className="section-label mb-2">Explorar por categoria</p>
-              <h2
-                className="font-bold text-[var(--text-primary)] tracking-tight"
-                style={{ fontSize: 'clamp(1.6rem, 3vw, 2.25rem)', letterSpacing: '-0.02em' }}
-              >
+              <span className="section-eyebrow">Explorar por categoria</span>
+              <h2 className="section-heading">
                 Soluções para cada necessidade
               </h2>
             </div>
             <Link
               href="/categorias"
-              className="text-sm font-medium text-green-600 hover:text-green-700 transition-colors whitespace-nowrap"
+              className="text-sm font-semibold text-green-600 hover:text-green-700 transition-colors flex items-center gap-1 shrink-0"
             >
-              Ver todas →
+              Ver todas as categorias
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </Link>
           </div>
 
-          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-4">
+          {/* Grid */}
+          <div className="grid grid-cols-2 sm:grid-cols-3 lg:grid-cols-4 gap-3 sm:gap-4">
             {categorias.map((cat) => (
               <Link
                 key={cat.id}
                 href={`/categoria/${cat.slug}`}
-                className="feature-card block group"
+                className="cat-card-premium group"
                 style={{ '--cat-color': cat.cor } as React.CSSProperties}
               >
+                {/* Color accent line */}
+                <span className="card-accent" />
+
+                {/* Icon */}
                 <div
-                  className="w-10 h-10 rounded-xl flex items-center justify-center text-xl mb-4"
-                  style={{ background: `${cat.cor}18` }}
+                  className="cat-icon-wrap"
+                  style={{ background: `${cat.cor}15` }}
                 >
                   {cat.icone}
                 </div>
-                <p className="font-semibold text-[var(--text-primary)] text-sm mb-1 group-hover:text-green-700 transition-colors">
+
+                {/* Name */}
+                <p className="font-semibold text-sm text-[var(--foreground)] mb-1 group-hover:text-green-700 transition-colors leading-snug">
                   {cat.nome}
                 </p>
-                <p className="text-xs" style={{ color: 'var(--text-muted)' }}>
-                  {cat._count.ferramentas} ferramenta{cat._count.ferramentas !== 1 ? 's' : ''}
+
+                {/* Count */}
+                <p className="text-xs text-[var(--muted-foreground)]">
+                  {cat._count.ferramentas}{' '}
+                  ferramenta{cat._count.ferramentas !== 1 ? 's' : ''}
                 </p>
-                <p
-                  className="text-xs mt-3 font-medium text-green-600 opacity-0 group-hover:opacity-100 transition-opacity"
-                >
-                  Ver categoria →
-                </p>
+
+                {/* Hover arrow */}
+                <span className="mt-3 text-xs font-semibold text-green-600 opacity-0 group-hover:opacity-100 transition-opacity flex items-center gap-1">
+                  Ver categoria
+                  <svg width="12" height="12" viewBox="0 0 12 12" fill="none">
+                    <path d="M2 6h8M7 3l3 3-3 3" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                  </svg>
+                </span>
               </Link>
             ))}
           </div>
         </div>
       </section>
 
-      {/* ── FEATURED TOOLS — "Powering businesses of all sizes" ── */}
-      <section style={{ background: '#fff', padding: '80px 0' }}>
-        <div className="max-w-6xl mx-auto px-6">
-          <div className="flex items-end justify-between mb-10">
+      {/* ── FEATURED TOOLS ───────────────────────────────────────── */}
+      <section style={{ background: 'var(--surface)', padding: '88px 0' }}>
+        <div className="max-w-6xl mx-auto px-5 sm:px-8">
+
+          {/* Section header */}
+          <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4 mb-12">
             <div>
-              <p className="section-label mb-2">Em destaque</p>
-              <h2
-                className="font-bold text-[var(--text-primary)] tracking-tight"
-                style={{ fontSize: 'clamp(1.6rem, 3vw, 2.25rem)', letterSpacing: '-0.02em' }}
-              >
+              <span className="section-eyebrow">Em destaque</span>
+              <h2 className="section-heading">
                 As mais populares da comunidade
               </h2>
             </div>
             <Link
               href="/novidades"
-              className="text-sm font-medium text-green-600 hover:text-green-700 transition-colors whitespace-nowrap"
+              className="text-sm font-semibold text-green-600 hover:text-green-700 transition-colors flex items-center gap-1 shrink-0"
             >
-              Ver todas →
+              Ver todas
+              <svg width="14" height="14" viewBox="0 0 14 14" fill="none">
+                <path d="M3 7h8M8 4l3 3-3 3" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round" />
+              </svg>
             </Link>
           </div>
 
@@ -255,8 +299,8 @@ export default async function HomePage() {
               style={{ border: '2px dashed var(--border)' }}
             >
               <p className="text-3xl mb-3">🚀</p>
-              <p className="font-semibold text-slate-500 mb-4">Em breve aqui</p>
-              <Link href="/submeter" className="btn-accent-clean text-sm" style={{ padding: '8px 20px' }}>
+              <p className="font-semibold text-[var(--muted)] mb-4">Em breve aqui</p>
+              <Link href="/submeter" className="btn-accent" style={{ padding: '8px 20px', fontSize: '13px' }}>
                 Submeter ferramenta →
               </Link>
             </div>
@@ -264,73 +308,89 @@ export default async function HomePage() {
             <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-4">
               {ferramentasDestaque.map((f) => {
                 const avatarColor = getAvatarColor(f.nome)
-                const initials = f.nome.split(' ').map((w: string) => w[0]).slice(0, 2).join('').toUpperCase()
+                const initials = f.nome
+                  .split(' ')
+                  .map((w: string) => w[0])
+                  .slice(0, 2)
+                  .join('')
+                  .toUpperCase()
                 const linkExterno = f.urlAfiliado || f.url
 
                 return (
-                  <div key={f.id} className="tool-card-clean group">
-                    <div className="flex items-start gap-3">
+                  <article key={f.id} className="tool-card-premium group">
+
+                    {/* Header: avatar + name + badge */}
+                    <div className="flex items-start gap-3.5">
                       {/* Avatar */}
                       <div
-                        className="rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden"
+                        className="tool-avatar"
                         style={{
-                          width: '44px',
-                          height: '44px',
-                          background: f.logoUrl ? '#f6f9fc' : `${avatarColor}15`,
-                          border: `1.5px solid ${avatarColor}25`,
+                          background: f.logoUrl ? 'var(--surface-subtle)' : `${avatarColor}16`,
+                          border: `1.5px solid ${avatarColor}28`,
                         }}
                       >
                         {f.logoUrl ? (
                           <Image
                             src={f.logoUrl}
                             alt={f.nome}
-                            width={44}
-                            height={44}
-                            className="w-full h-full object-contain p-1"
+                            width={48}
+                            height={48}
+                            className="w-full h-full object-contain p-1.5"
                           />
                         ) : (
-                          <span className="text-sm font-bold" style={{ color: avatarColor }}>
-                            {initials}
-                          </span>
+                          <span style={{ color: avatarColor }}>{initials}</span>
                         )}
                       </div>
 
-                      <div className="flex-1 min-w-0">
-                        <div className="flex items-center gap-2 flex-wrap mb-0.5">
+                      <div className="flex-1 min-w-0 pt-0.5">
+                        <div className="flex flex-wrap items-center gap-1.5 mb-0.5">
                           <Link
                             href={`/ferramenta/${f.slug}`}
-                            className="font-semibold text-sm text-[var(--text-primary)] hover:text-green-700 transition-colors leading-snug"
+                            className="font-semibold text-[var(--foreground)] hover:text-green-700 transition-colors text-sm leading-snug"
                           >
                             {f.nome}
                           </Link>
-                          {f.destaque && <span className="badge-featured">⭐ Destaque</span>}
+                          {f.destaque && (
+                            <span className="badge-featured">⭐ Destaque</span>
+                          )}
                         </div>
-                        <p className="text-xs leading-relaxed mb-3 line-clamp-2" style={{ color: 'var(--text-secondary)' }}>
-                          {f.descricao}
-                        </p>
-                        <div className="flex items-center justify-between gap-2">
-                          <div className="flex items-center gap-2">
-                            <span className={badgeClass(f.precificacao)}>{labelPreco(f.precificacao)}</span>
-                            <Link
-                              href={`/categoria/${f.categoria.slug}`}
-                              className="text-xs transition-colors hover:text-green-600"
-                              style={{ color: 'var(--text-muted)' }}
-                            >
-                              {f.categoria.icone} {f.categoria.nome}
-                            </Link>
-                          </div>
-                          <a
-                            href={linkExterno}
-                            target="_blank"
-                            rel="noopener noreferrer"
-                            className="text-xs font-medium text-green-600 hover:text-green-700 transition-colors flex items-center gap-0.5"
-                          >
-                            Visitar →
-                          </a>
-                        </div>
+
+                        {/* Category */}
+                        <Link
+                          href={`/categoria/${f.categoria.slug}`}
+                          className="text-xs text-[var(--muted-foreground)] hover:text-green-600 transition-colors"
+                        >
+                          {f.categoria.icone} {f.categoria.nome}
+                        </Link>
                       </div>
                     </div>
-                  </div>
+
+                    {/* Description */}
+                    <p
+                      className="text-sm leading-relaxed line-clamp-2"
+                      style={{ color: 'var(--muted)' }}
+                    >
+                      {f.descricao}
+                    </p>
+
+                    {/* Footer: badge + CTA */}
+                    <div className="flex items-center justify-between pt-1" style={{ borderTop: '1px solid var(--border)', paddingTop: '14px', marginTop: '-2px' }}>
+                      <span className={badgeClass(f.precificacao)}>
+                        {labelPreco(f.precificacao)}
+                      </span>
+                      <a
+                        href={linkExterno}
+                        target="_blank"
+                        rel="noopener noreferrer"
+                        className="text-xs font-semibold text-green-600 hover:text-green-700 transition-colors flex items-center gap-1"
+                      >
+                        Visitar
+                        <svg width="11" height="11" viewBox="0 0 11 11" fill="none">
+                          <path d="M2 9L9 2M9 2H5M9 2v4" stroke="currentColor" strokeWidth="1.4" strokeLinecap="round" strokeLinejoin="round" />
+                        </svg>
+                      </a>
+                    </div>
+                  </article>
                 )
               })}
             </div>
@@ -338,64 +398,82 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── NEWSLETTER — dark section like Stripe's bottom CTA ── */}
-      <section style={{ background: 'var(--text-primary)', padding: '80px 0' }}>
-        <div className="max-w-2xl mx-auto px-6 text-center">
-          <p className="section-label mb-3" style={{ color: '#4ade80' }}>Newsletter gratuita</p>
-          <h2
-            className="font-bold text-white mb-4 tracking-tight"
-            style={{ fontSize: 'clamp(1.6rem, 3vw, 2rem)', letterSpacing: '-0.02em' }}
-          >
-            Novidades de IA todas as semanas
-          </h2>
-          <p className="mb-8" style={{ color: '#8898aa', lineHeight: 1.7 }}>
-            As melhores ferramentas novas, tutoriais e dicas de IA — em português, sem spam.
-          </p>
-          <form action="/api/newsletter" method="POST" className="flex gap-2 max-w-sm mx-auto">
-            <input
-              name="email"
-              type="email"
-              required
-              placeholder="o.teu@email.com"
-              className="flex-1 rounded-xl px-4 py-2.5 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-green-500"
-              style={{ background: 'rgba(255,255,255,0.07)', border: '1px solid rgba(255,255,255,0.12)' }}
-            />
-            <button type="submit" className="btn-accent-clean text-sm whitespace-nowrap" style={{ padding: '10px 18px' }}>
-              Subscrever
-            </button>
-          </form>
+      {/* ── NEWSLETTER ───────────────────────────────────────────── */}
+      <section style={{ background: 'var(--primary)', padding: '80px 0' }}>
+        <div className="max-w-5xl mx-auto px-5 sm:px-8">
+          <div className="flex flex-col md:flex-row md:items-center gap-10 md:gap-16">
+
+            {/* Text */}
+            <div className="flex-1">
+              <span className="section-eyebrow" style={{ color: '#4ade80' }}>
+                Newsletter gratuita
+              </span>
+              <h2
+                className="font-bold text-white mb-3 tracking-tight"
+                style={{ fontSize: 'clamp(1.5rem, 3vw, 2rem)', letterSpacing: '-0.025em' }}
+              >
+                Novidades de IA todas as semanas
+              </h2>
+              <p style={{ color: '#8898aa', lineHeight: 1.7, fontSize: '15px' }}>
+                As melhores ferramentas novas, tutoriais e dicas de IA — em português, sem spam.
+              </p>
+            </div>
+
+            {/* Form */}
+            <div className="md:w-80 shrink-0">
+              <form action="/api/newsletter" method="POST" className="flex flex-col gap-3">
+                <input
+                  name="email"
+                  type="email"
+                  required
+                  placeholder="o.teu@email.com"
+                  className="w-full rounded-lg px-4 py-3 text-sm text-white placeholder:text-slate-500 focus:outline-none focus:ring-2 focus:ring-green-500"
+                  style={{
+                    background: 'rgba(255,255,255,0.07)',
+                    border: '1px solid rgba(255,255,255,0.12)',
+                  }}
+                />
+                <button type="submit" className="btn-accent w-full">
+                  Subscrever newsletter
+                </button>
+              </form>
+              <p className="text-xs mt-3" style={{ color: 'rgba(255,255,255,0.25)' }}>
+                Sem spam. Cancelamento fácil a qualquer momento.
+              </p>
+            </div>
+          </div>
         </div>
       </section>
 
-      {/* ── CTA — green section like Stripe's "Ready to get started?" */}
-      <section style={{ background: '#16a34a', padding: '72px 0' }}>
-        <div className="max-w-4xl mx-auto px-6 flex flex-col md:flex-row items-center justify-between gap-6">
-          <div className="text-center md:text-left">
-            <h2
-              className="font-bold text-white mb-2 tracking-tight"
-              style={{ fontSize: '1.5rem', letterSpacing: '-0.02em' }}
-            >
-              Tens uma ferramenta de IA?
-            </h2>
-            <p style={{ color: 'rgba(255,255,255,0.75)', fontSize: '15px' }}>
-              Aparece em frente de milhares de profissionais lusófonos — CPLP e diáspora.
-            </p>
-          </div>
-          <div className="flex gap-3 shrink-0">
-            <Link
-              href="/submeter"
-              className="text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors"
-              style={{ background: 'rgba(255,255,255,0.15)', color: 'white', border: '1px solid rgba(255,255,255,0.25)' }}
-            >
-              Submeter grátis
-            </Link>
-            <Link
-              href="/destaque"
-              className="text-sm font-semibold px-5 py-2.5 rounded-lg transition-colors"
-              style={{ background: 'white', color: '#16a34a' }}
-            >
-              Destacar ↗
-            </Link>
+      {/* ── SUBMISSION CTA ────────────────────────────────────────── */}
+      <section style={{ background: '#f0fdf4', borderTop: '1px solid #bbf7d0', padding: '72px 0' }}>
+        <div className="max-w-5xl mx-auto px-5 sm:px-8">
+          <div className="flex flex-col md:flex-row md:items-center justify-between gap-8">
+
+            {/* Text */}
+            <div>
+              <span className="section-eyebrow">Para criadores e empresas</span>
+              <h2
+                className="font-bold text-[var(--foreground)] mb-2 tracking-tight"
+                style={{ fontSize: 'clamp(1.4rem, 3vw, 1.875rem)', letterSpacing: '-0.025em' }}
+              >
+                Tens uma ferramenta de IA?
+              </h2>
+              <p className="text-[var(--muted)]" style={{ fontSize: '15px', maxWidth: '440px' }}>
+                Aparece em frente de milhares de profissionais lusófonos — CPLP e diáspora.
+                Submissão gratuita sempre disponível.
+              </p>
+            </div>
+
+            {/* Actions */}
+            <div className="flex flex-col sm:flex-row gap-3 shrink-0">
+              <Link href="/submeter" className="btn-outline">
+                Submeter grátis
+              </Link>
+              <Link href="/destaque" className="btn-accent">
+                Destacar ferramenta ↗
+              </Link>
+            </div>
           </div>
         </div>
       </section>
