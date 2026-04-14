@@ -62,37 +62,66 @@ export function DestaquePlanCards({ ferramentaId }: { ferramentaId: string }) {
   const missing = !trimmed
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14">
       {PLANOS.map((p) => (
         <div
           key={p.id}
-          className={`bg-white rounded-2xl p-6 ${
-            p.destaque ? 'border-2 border-emerald-400 shadow-lg relative' : 'border border-slate-200'
-          }`}
+          className="relative rounded-2xl p-6 flex flex-col"
+          style={
+            p.destaque
+              ? {
+                  background: 'var(--surface)',
+                  border: '2px solid var(--accent)',
+                  boxShadow: 'var(--shadow-lg)',
+                }
+              : {
+                  background: 'var(--surface)',
+                  border: '1px solid var(--border)',
+                }
+          }
         >
+          {/* Most popular badge */}
           {p.destaque && (
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-xs font-medium px-3 py-1 rounded-full">
+            <div
+              className="absolute -top-3.5 left-1/2 -translate-x-1/2 text-white text-[11px] font-semibold px-3 py-1 rounded-full"
+              style={{ background: 'var(--accent)' }}
+            >
               Mais popular
             </div>
           )}
 
-          <p className="font-display font-700 text-slate-900 mb-0.5">{p.nome}</p>
-          <p className="text-xs text-slate-400 mb-4">{p.descricao}</p>
+          {/* Plan name + description */}
+          <p className="font-bold text-[var(--foreground)] text-base mb-0.5">{p.nome}</p>
+          <p className="text-xs mb-5" style={{ color: 'var(--muted-foreground)' }}>{p.descricao}</p>
 
-          <div className="mb-5">
-            <span className="font-display text-3xl font-800 text-slate-900">€{p.preco}</span>
-            <span className="text-slate-400 text-sm">/mês</span>
+          {/* Price */}
+          <div className="mb-6">
+            <span className="font-extrabold text-[2rem] text-[var(--foreground)] tracking-tight leading-none">
+              €{p.preco}
+            </span>
+            <span className="text-sm ml-1" style={{ color: 'var(--muted-foreground)' }}>/mês</span>
           </div>
 
-          <ul className="space-y-2 mb-6">
+          {/* Features */}
+          <ul className="space-y-2.5 mb-7 flex-1">
             {p.features.map((f) => (
-              <li key={f} className="flex items-start gap-2 text-sm text-slate-600">
-                <span className="text-emerald-500 mt-0.5 shrink-0">✓</span>
+              <li key={f} className="flex items-start gap-2.5 text-sm" style={{ color: 'var(--muted)' }}>
+                <svg
+                  className="shrink-0 mt-0.5"
+                  width="14" height="14" viewBox="0 0 14 14" fill="none"
+                  style={{ color: 'var(--accent)' }}
+                >
+                  <path
+                    d="M2.5 7l3.5 3.5 5.5-6"
+                    stroke="currentColor" strokeWidth="1.6" strokeLinecap="round" strokeLinejoin="round"
+                  />
+                </svg>
                 {f}
               </li>
             ))}
           </ul>
 
+          {/* CTA */}
           <a
             href={
               missing
@@ -107,11 +136,8 @@ export function DestaquePlanCards({ ferramentaId }: { ferramentaId: string }) {
                 )
               }
             }}
-            className={`block text-center py-2.5 rounded-xl text-sm font-medium transition-colors ${
-              p.destaque
-                ? 'bg-emerald-500 text-white hover:bg-emerald-400'
-                : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
-            } ${missing ? 'opacity-80' : ''}`}
+            className={p.destaque ? 'btn-accent text-center' : 'btn-outline text-center'}
+            style={{ opacity: missing ? 0.7 : 1 }}
           >
             {p.cta} →
           </a>

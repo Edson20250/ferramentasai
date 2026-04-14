@@ -13,13 +13,38 @@ export const dynamic = 'force-dynamic'
 type Props = { searchParams: Promise<{ ferramentaId?: string; erro?: string }> }
 
 const ERROS: Record<string, string> = {
-  missing_ferramenta: 'Falta o identificador da ferramenta. Usa o botão «Destacar» na página da ferramenta.',
-  invalid_plano: 'Plano inválido.',
-  ferramenta_not_found: 'Ferramenta não encontrada.',
+  missing_ferramenta:    'Falta o identificador da ferramenta. Usa o botão «Destacar» na página da ferramenta.',
+  invalid_plano:         'Plano inválido.',
+  ferramenta_not_found:  'Ferramenta não encontrada.',
   ferramenta_not_approved: 'Esta ferramenta ainda não está aprovada no diretório.',
-  config: 'Configuração do servidor incompleta. Contacta o suporte.',
-  stripe: 'Erro ao iniciar o pagamento. Tenta de novo.',
+  config:                'Configuração do servidor incompleta. Contacta o suporte.',
+  stripe:                'Erro ao iniciar o pagamento. Tenta de novo.',
 }
+
+const STATS = [
+  { value: '12.000+', label: 'Visitantes mensais' },
+  { value: '250M+',   label: 'Mercado lusófono' },
+  { value: '3 dias',  label: 'Tempo médio p/ 1.º cliente' },
+]
+
+const FAQ = [
+  {
+    q: 'Quando fica ativo o destaque?',
+    r: 'Após o pagamento confirmado (segundos). O webhook da Stripe ativa automaticamente o destaque na ferramenta.',
+  },
+  {
+    q: 'Posso submeter a ferramenta gratuitamente?',
+    r: 'Sim! A listagem básica é sempre gratuita. O destaque pago coloca-te no topo das categorias e na homepage.',
+  },
+  {
+    q: 'Quem visita o FerramentasAI?',
+    r: `${LUSO_PROFESSIONALS} — marketing, developers, empreendedores e PMEs que procuram ferramentas de IA.`,
+  },
+  {
+    q: 'Posso cancelar a qualquer momento?',
+    r: 'Sim. O destaque é por período pago; quando expira, o destaque é removido automaticamente salvo renovação.',
+  },
+]
 
 export default async function DestacarPage({ searchParams }: Props) {
   const sp = await searchParams
@@ -28,90 +53,120 @@ export default async function DestacarPage({ searchParams }: Props) {
   const erroMsg = erroKey ? ERROS[erroKey] ?? 'Não foi possível concluir o pedido.' : null
 
   return (
-    <div className="max-w-5xl mx-auto px-4 sm:px-6 py-12">
-      <div className="text-center mb-12">
-        <p className="text-emerald-700 text-sm font-medium mb-3">Publicidade no diretório</p>
-        <h1 className="font-display text-3xl md:text-4xl font-800 text-slate-900 mb-4">
-          Alcança profissionais em todo o mundo lusófono
-        </h1>
-        <p className="text-slate-500 max-w-2xl mx-auto leading-relaxed">
-          O FerramentasAI é o maior diretório de ferramentas de IA em português para {LUSO_AUDIENCE_COUNTRIES}. Coloca a tua ferramenta à frente de quem decide.
-        </p>
-      </div>
+    <div className="min-h-screen" style={{ background: 'var(--surface-subtle)' }}>
 
-      {erroMsg && (
-        <div className="mb-8 rounded-xl border border-amber-200 bg-amber-50 px-4 py-3 text-sm text-amber-900 text-center">
-          {erroMsg}
+      {/* ── Hero header ──────────────────────────────── */}
+      <div style={{ background: 'var(--primary)', borderBottom: '1px solid rgba(255,255,255,0.06)' }}>
+        <div className="max-w-4xl mx-auto px-5 sm:px-8 py-16 text-center">
+          <span className="section-eyebrow" style={{ color: '#4ade80' }}>
+            Publicidade no diretório
+          </span>
+          <h1
+            className="font-extrabold text-white mt-3 mb-4 tracking-tight"
+            style={{ fontSize: 'clamp(1.75rem, 4vw, 2.75rem)', letterSpacing: '-0.03em', lineHeight: 1.1 }}
+          >
+            Alcança profissionais em todo<br className="hidden sm:block" /> o mundo lusófono
+          </h1>
+          <p className="max-w-xl mx-auto leading-relaxed" style={{ color: '#8898aa', fontSize: '1rem' }}>
+            O FerramentasAI é o maior diretório de ferramentas de IA em português para{' '}
+            {LUSO_AUDIENCE_COUNTRIES}.
+          </p>
         </div>
-      )}
-
-      {ferramentaId ? (
-        <p className="text-center text-xs text-slate-500 mb-6">
-          A pagar destaque para a ferramenta selecionada.{' '}
-          <Link href="/categorias" className="text-emerald-700 hover:underline">
-            Escolher outra
-          </Link>
-        </p>
-      ) : (
-        <p className="text-center text-sm text-slate-600 mb-8 max-w-lg mx-auto">
-          Para comprar um plano, vai à{' '}
-          <Link href="/categorias" className="text-emerald-700 font-medium hover:underline">
-            página da tua ferramenta
-          </Link>{' '}
-          e clica em «Destacar no diretório», ou cola o ID da ferramenta no URL:{' '}
-          <code className="text-xs bg-slate-100 px-1 rounded">?ferramentaId=…</code>
-        </p>
-      )}
-
-      <div className="grid grid-cols-3 gap-4 mb-12">
-        {[
-          { valor: '12.000+', desc: 'Visitantes mensais' },
-          { valor: '250M+', desc: 'Mercado lusófono' },
-          { valor: '3 dias', desc: 'Tempo médio para 1.º cliente' },
-        ].map((s) => (
-          <div key={s.desc} className="bg-white border border-slate-200 rounded-xl p-5 text-center">
-            <p className="font-display text-2xl font-700 text-slate-900 mb-1">{s.valor}</p>
-            <p className="text-xs text-slate-400">{s.desc}</p>
-          </div>
-        ))}
       </div>
 
-      <DestaquePlanCards ferramentaId={ferramentaId} />
+      <div className="max-w-5xl mx-auto px-5 sm:px-8 py-12">
 
-      <div className="max-w-2xl mx-auto">
-        <h2 className="font-display text-xl font-700 text-slate-900 mb-6 text-center">Perguntas frequentes</h2>
-        <div className="space-y-4">
-          {[
-            {
-              q: 'Quando fica ativo o destaque?',
-              r: 'Após o pagamento confirmado (segundos). O webhook da Stripe ativa automaticamente o destaque na ferramenta.',
-            },
-            {
-              q: 'Posso submeter a ferramenta gratuitamente?',
-              r: 'Sim! A listagem básica é sempre gratuita. O destaque pago coloca-te no topo das categorias e na homepage.',
-            },
-            {
-              q: 'Quem visita o FerramentasAI?',
-              r: `${LUSO_PROFESSIONALS} — marketing, developers, empreendedores e PMEs que procuram ferramentas de IA.`,
-            },
-            {
-              q: 'Posso cancelar a qualquer momento?',
-              r: 'Sim. O destaque é por período pago; quando expira, o destaque é removido automaticamente salvo renovação.',
-            },
-          ].map((f) => (
-            <div key={f.q} className="bg-white border border-slate-100 rounded-xl p-5">
-              <p className="font-medium text-slate-900 text-sm mb-1.5">{f.q}</p>
-              <p className="text-sm text-slate-500 leading-relaxed">{f.r}</p>
+        {/* Error banner */}
+        {erroMsg && (
+          <div
+            className="mb-8 rounded-xl px-5 py-4 text-sm text-center font-medium"
+            style={{ background: '#fffbeb', border: '1px solid #fde68a', color: '#92400e' }}
+          >
+            {erroMsg}
+          </div>
+        )}
+
+        {/* Context copy */}
+        {ferramentaId ? (
+          <p className="text-center text-sm text-[var(--muted-foreground)] mb-8">
+            A pagar destaque para a ferramenta selecionada.{' '}
+            <Link href="/categorias" className="text-green-600 font-medium hover:text-green-700 transition-colors">
+              Escolher outra ferramenta
+            </Link>
+          </p>
+        ) : (
+          <div
+            className="rounded-xl px-5 py-4 text-sm text-center mb-8"
+            style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
+          >
+            Para comprar um plano, vai à{' '}
+            <Link href="/categorias" className="text-green-600 font-medium hover:text-green-700">
+              página da tua ferramenta
+            </Link>{' '}
+            e clica em «Destacar no diretório», ou adiciona{' '}
+            <code
+              className="text-xs px-1.5 py-0.5 rounded font-mono"
+              style={{ background: 'var(--surface-muted)', color: 'var(--muted)' }}
+            >
+              ?ferramentaId=…
+            </code>{' '}
+            ao URL desta página.
+          </div>
+        )}
+
+        {/* ── Stats ─────────────────────────────────── */}
+        <div className="grid grid-cols-3 gap-4 mb-12">
+          {STATS.map((s) => (
+            <div
+              key={s.label}
+              className="rounded-xl p-5 text-center"
+              style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
+            >
+              <p
+                className="font-extrabold mb-1 tracking-tight"
+                style={{ fontSize: '1.625rem', color: 'var(--foreground)', letterSpacing: '-0.025em' }}
+              >
+                {s.value}
+              </p>
+              <p className="text-xs" style={{ color: 'var(--muted-foreground)' }}>{s.label}</p>
             </div>
           ))}
         </div>
 
-        <p className="text-center text-sm text-slate-400 mt-8">
-          Tens dúvidas? Fala connosco em{' '}
-          <a href="mailto:ola@ferramentasai.pt" className="text-emerald-700 hover:underline">
-            ola@ferramentasai.pt
-          </a>
-        </p>
+        {/* ── Plan cards ────────────────────────────── */}
+        <DestaquePlanCards ferramentaId={ferramentaId} />
+
+        {/* ── FAQ ───────────────────────────────────── */}
+        <div className="max-w-2xl mx-auto">
+          <h2
+            className="font-bold text-[var(--foreground)] text-xl text-center mb-6 tracking-tight"
+            style={{ letterSpacing: '-0.02em' }}
+          >
+            Perguntas frequentes
+          </h2>
+          <div className="space-y-3">
+            {FAQ.map((item) => (
+              <div
+                key={item.q}
+                className="rounded-xl p-5"
+                style={{ background: 'var(--surface)', border: '1px solid var(--border)' }}
+              >
+                <p className="font-semibold text-sm text-[var(--foreground)] mb-1.5">{item.q}</p>
+                <p className="text-sm leading-relaxed" style={{ color: 'var(--muted)' }}>{item.r}</p>
+              </div>
+            ))}
+          </div>
+
+          <p className="text-center text-sm mt-8" style={{ color: 'var(--muted-foreground)' }}>
+            Tens dúvidas? Fala connosco em{' '}
+            <a
+              href="mailto:ola@ferramentasai.pt"
+              className="text-green-600 font-medium hover:text-green-700 transition-colors"
+            >
+              ola@ferramentasai.pt
+            </a>
+          </p>
+        </div>
       </div>
     </div>
   )
