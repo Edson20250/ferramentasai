@@ -440,6 +440,47 @@
   .badge-freemium { @apply badge-price; background: #eff6ff; color: #1e40af; border: 1px solid #bfdbfe; }
   .badge-featured { @apply badge-price; background: #fefce8; color: #854d0e; border: 1px solid #fef08a; }
 
+  /* ── FORM INPUTS ─────────────────────────────────── */
+  .input-premium {
+    width: 100%;
+    background: var(--surface);
+    border: 1.5px solid var(--border);
+    border-radius: var(--radius-sm);
+    padding: 10px 14px;
+    font-size: 14px;
+    font-family: inherit;
+    color: var(--foreground);
+    transition: border-color 180ms, box-shadow 180ms;
+    outline: none;
+    appearance: none;
+  }
+  .input-premium::placeholder { color: var(--muted-foreground); }
+  .input-premium:focus {
+    border-color: rgba(22, 163, 74, 0.5);
+    box-shadow: 0 0 0 3px rgba(22, 163, 74, 0.08);
+  }
+  .input-premium:disabled {
+    background: var(--surface-muted);
+    cursor: not-allowed;
+    opacity: 0.6;
+  }
+
+  .label-premium {
+    display: block;
+    font-size: 13px;
+    font-weight: 600;
+    color: var(--foreground);
+    margin-bottom: 6px;
+    letter-spacing: -0.01em;
+  }
+
+  .label-hint {
+    font-size: 12px;
+    color: var(--muted-foreground);
+    font-weight: 400;
+    margin-left: 4px;
+  }
+
   /* ── LEGACY (other pages keep working) ──────────── */
   .hero-section {
     @apply bg-slate-900;
@@ -460,7 +501,7 @@
   .badge-contacto { @apply bg-slate-100 text-slate-700; }
   .btn-primary-lg { @apply bg-slate-900 text-white px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-800 active:scale-95 transition-all duration-150; }
   .btn-outline-lg { @apply border border-slate-300 text-slate-700 px-4 py-2 rounded-lg text-sm font-medium hover:bg-slate-50 hover:border-slate-400 active:scale-95 transition-all duration-150; }
-  .input-search   { @apply w-full bg-white border border-slate-200 rounded-xl px-4 py-3 text-sm placeholder:text-slate-400 focus:outline-none focus:ring-2 focus:ring-emerald-500 focus:border-transparent; }
+  .input-search   { @apply input-premium; }
 
   /* keep old button names that other pages might use */
   .btn-primary-clean { @apply btn-primary; }
