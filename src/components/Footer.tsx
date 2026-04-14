@@ -5,31 +5,31 @@ const NAV = [
   {
     title: 'Explorar',
     links: [
-      { href: '/categorias',          label: 'Todas as categorias' },
-      { href: '/novidades',           label: 'Novidades'           },
-      { href: '/destaque',            label: 'Em destaque'         },
-      { href: '/gratuitas',           label: 'Ferramentas grátis'  },
-      { href: '/pesquisa',            label: 'Pesquisa avançada'   },
+      { href: '/categorias',         label: 'Todas as categorias' },
+      { href: '/novidades',          label: 'Novidades'           },
+      { href: '/destaque',           label: 'Em destaque'         },
+      { href: '/gratuitas',          label: 'Ferramentas grátis'  },
+      { href: '/pesquisa',           label: 'Pesquisa avançada'   },
     ],
   },
   {
     title: 'Categorias',
     links: [
-      { href: '/categoria/escrita',   label: '✍️ Escrita e Texto'  },
-      { href: '/categoria/imagem',    label: '🎨 Imagem e Design'  },
-      { href: '/categoria/codigo',    label: '💻 Código e Dev'     },
-      { href: '/categoria/negocios',  label: '📈 Negócios'         },
-      { href: '/categoria/audio',     label: '🎵 Áudio e Voz'      },
+      { href: '/categoria/escrita',  label: '✍️ Escrita e Texto'  },
+      { href: '/categoria/imagem',   label: '🎨 Imagem e Design'  },
+      { href: '/categoria/codigo',   label: '💻 Código e Dev'     },
+      { href: '/categoria/negocios', label: '📈 Negócios'         },
+      { href: '/categoria/audio',    label: '🎵 Áudio e Voz'      },
     ],
   },
   {
     title: 'Site',
     links: [
-      { href: '/submeter',            label: 'Submeter ferramenta' },
-      { href: '/destaque',            label: 'Anunciar / Destacar' },
-      { href: '/newsletter',          label: 'Newsletter'          },
-      { href: '/sobre',               label: 'Sobre nós'           },
-      { href: '/afiliados',           label: 'Afiliados'           },
+      { href: '/submeter',           label: 'Submeter ferramenta' },
+      { href: '/destaque',           label: 'Anunciar / Destacar' },
+      { href: '/newsletter',         label: 'Newsletter'          },
+      { href: '/sobre',              label: 'Sobre nós'           },
+      { href: '/afiliados',          label: 'Afiliados'           },
     ],
   },
 ]
@@ -44,11 +44,11 @@ export function Footer() {
 
           {/* Brand column */}
           <div className="col-span-2 md:col-span-1">
-            <Link href="/" className="inline-flex items-center gap-0.5 mb-4">
+            <Link href="/" className="inline-flex items-center gap-0 mb-4">
               <span className="font-bold text-white text-base tracking-tight">ferramentas</span>
               <span className="font-bold text-green-400 text-base tracking-tight">ai</span>
             </Link>
-            <p className="text-sm leading-relaxed" style={{ color: '#8898aa' }}>
+            <p className="text-sm leading-relaxed text-[#8898aa]">
               O melhor diretório de ferramentas de IA em português. Curado para {LUSO_AUDIENCE_LINE}.
             </p>
           </div>
@@ -56,10 +56,7 @@ export function Footer() {
           {/* Nav columns */}
           {NAV.map((col) => (
             <div key={col.title}>
-              <p
-                className="text-xs font-semibold uppercase tracking-widest mb-4"
-                style={{ color: 'rgba(255,255,255,0.35)' }}
-              >
+              <p className="text-xs font-semibold uppercase tracking-widest mb-4 text-white/30">
                 {col.title}
               </p>
               <ul className="space-y-2.5">
@@ -67,10 +64,7 @@ export function Footer() {
                   <li key={href}>
                     <Link
                       href={href}
-                      className="text-sm transition-colors"
-                      style={{ color: '#8898aa' }}
-                      onMouseEnter={e => (e.currentTarget.style.color = '#fff')}
-                      onMouseLeave={e => (e.currentTarget.style.color = '#8898aa')}
+                      className="text-sm text-[#8898aa] hover:text-white transition-colors"
                     >
                       {label}
                     </Link>
@@ -81,12 +75,12 @@ export function Footer() {
           ))}
         </div>
 
-        {/* Bottom bar — like Stripe's copyright row */}
+        {/* Bottom bar */}
         <div
           className="flex flex-col sm:flex-row justify-between items-center gap-3 pt-8"
           style={{ borderTop: '1px solid rgba(255,255,255,0.07)' }}
         >
-          <p className="text-xs" style={{ color: 'rgba(255,255,255,0.2)' }}>
+          <p className="text-xs text-white/20">
             © {new Date().getFullYear()} FerramentasAI · Feito em Portugal 🇵🇹
           </p>
           <div className="flex gap-5">
@@ -98,10 +92,7 @@ export function Footer() {
               <Link
                 key={href}
                 href={href}
-                className="text-xs transition-colors"
-                style={{ color: 'rgba(255,255,255,0.2)' }}
-                onMouseEnter={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.5)')}
-                onMouseLeave={e => (e.currentTarget.style.color = 'rgba(255,255,255,0.2)')}
+                className="text-xs text-white/20 hover:text-white/50 transition-colors"
               >
                 {label}
               </Link>

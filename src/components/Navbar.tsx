@@ -28,10 +28,7 @@ export function Navbar() {
             <Link
               key={href}
               href={href}
-              className="text-sm font-medium transition-colors"
-              style={{ color: 'var(--text-secondary)' }}
-              onMouseEnter={e => (e.currentTarget.style.color = 'var(--text-primary)')}
-              onMouseLeave={e => (e.currentTarget.style.color = 'var(--text-secondary)')}
+              className="text-sm font-medium text-slate-500 hover:text-slate-900 transition-colors"
             >
               {label}
             </Link>
@@ -83,8 +80,7 @@ export function Navbar() {
             <Link
               key={href}
               href={href}
-              className="text-sm font-medium py-1"
-              style={{ color: 'var(--text-secondary)' }}
+              className="text-sm font-medium py-1 text-slate-500 hover:text-slate-900 transition-colors"
             >
               {label}
             </Link>
