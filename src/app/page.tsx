@@ -58,50 +58,72 @@ export default async function HomePage() {
       {/* ── HERO ─────────────────────────────────────── */}
       <section className="hero-v2">
         <div
-          className="relative max-w-7xl mx-auto px-6 sm:px-10"
+          className="relative z-[1] max-w-7xl mx-auto px-6 sm:px-10"
           style={{ paddingTop: '64px', paddingBottom: '64px' }}
         >
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-20 items-center">
 
             {/* Left — 60% */}
             <div className="lg:col-span-3">
+              {/* Badge */}
               <p
-                className="font-grotesk font-bold uppercase mb-6"
-                style={{ color: '#00ff88', fontSize: '11px', letterSpacing: '0.3em' }}
+                className="font-grotesk font-bold uppercase mb-6 fade-in-hero"
+                style={{ color: '#00ff88', fontSize: '11px', letterSpacing: '0.3em', animationDelay: '0ms' }}
               >
                 — O DIRETÓRIO
               </p>
 
-              <h1 className="font-grotesk mb-8" style={{ fontWeight: 900, lineHeight: 0.88 }}>
+              {/* Cinematic text reveal — each line slides up from its clip container */}
+              <h1 className="font-grotesk mb-0" style={{ fontWeight: 900 }}>
                 <span
-                  className="block text-white"
-                  style={{ fontSize: 'clamp(3.5rem, 9vw, 8.5rem)' }}
+                  className="reveal-clip"
+                  style={{ fontSize: 'clamp(3.5rem, 9vw, 8.5rem)', lineHeight: 0.92 }}
                 >
-                  DESCOBRE
+                  <span className="reveal-text text-white" style={{ animationDelay: '80ms' }}>
+                    DESCOBRE
+                  </span>
                 </span>
                 <span
-                  className="block text-white"
-                  style={{ fontSize: 'clamp(3.5rem, 9vw, 8.5rem)' }}
+                  className="reveal-clip"
+                  style={{ fontSize: 'clamp(3.5rem, 9vw, 8.5rem)', lineHeight: 0.92 }}
                 >
-                  A MELHOR
+                  <span className="reveal-text text-white" style={{ animationDelay: '240ms' }}>
+                    A MELHOR
+                  </span>
                 </span>
                 <span
-                  className="block"
-                  style={{ fontSize: 'clamp(3.5rem, 9vw, 8.5rem)', color: '#00ff88' }}
+                  className="reveal-clip"
+                  style={{ fontSize: 'clamp(3.5rem, 9vw, 8.5rem)', lineHeight: 0.92 }}
                 >
-                  IA.
+                  <span className="reveal-text" style={{ color: '#00ff88', animationDelay: '400ms' }}>
+                    IA.
+                  </span>
                 </span>
               </h1>
 
+              {/* Accent line that grows after "IA." */}
+              <span className="accent-grow-line" style={{ animationDelay: '850ms' }} />
+
               <p
-                className="leading-relaxed mb-10"
-                style={{ color: 'rgba(240,240,240,0.4)', fontSize: '15px', maxWidth: '400px' }}
+                className="leading-relaxed mb-10 fade-in-hero"
+                style={{
+                  color: 'rgba(240,240,240,0.4)',
+                  fontSize: '15px',
+                  maxWidth: '400px',
+                  animationDelay: '650ms',
+                  marginTop: '32px',
+                }}
               >
                 Descobre e compara as melhores ferramentas de inteligência artificial. Curadas para{' '}
                 {LUSO_AUDIENCE_LINE}.
               </p>
 
-              <form action="/pesquisa" method="GET" className="flex gap-2" style={{ maxWidth: '480px' }}>
+              <form
+                action="/pesquisa"
+                method="GET"
+                className="flex gap-2 fade-in-hero"
+                style={{ maxWidth: '480px', animationDelay: '800ms' }}
+              >
                 <div className="relative flex-1">
                   <span
                     className="absolute left-3.5 top-1/2 -translate-y-1/2 select-none"
@@ -137,7 +159,7 @@ export default async function HomePage() {
                 </button>
               </form>
 
-              <div className="flex flex-wrap items-center gap-3 mt-5">
+              <div className="flex flex-wrap items-center gap-3 mt-5 fade-in-hero" style={{ animationDelay: '950ms' }}>
                 <span style={{ color: 'rgba(240,240,240,0.2)', fontSize: '11px' }}>Popular:</span>
                 {['ChatGPT', 'Midjourney', 'Copilot', 'Perplexity'].map((t) => (
                   <Link
@@ -152,8 +174,8 @@ export default async function HomePage() {
               </div>
 
               <div
-                className="flex flex-wrap gap-6 mt-10 pt-8"
-                style={{ borderTop: '1px solid #1a1a1a' }}
+                className="flex flex-wrap gap-6 mt-10 pt-8 fade-in-hero"
+                style={{ borderTop: '1px solid #1a1a1a', animationDelay: '1050ms' }}
               >
                 {[
                   { label: `${totalFerramentas}+ ferramentas` },
@@ -183,7 +205,7 @@ export default async function HomePage() {
             </div>
 
             {/* Right — 40%: 2×2 category grid */}
-            <div className="lg:col-span-2 grid grid-cols-2 gap-3">
+            <div className="lg:col-span-2 grid grid-cols-2 gap-3 fade-in-hero" style={{ animationDelay: '500ms' }}>
               {heroCategories.length > 0
                 ? heroCategories.map((cat) => (
                     <Link key={cat.id} href={`/categoria/${cat.slug}`} className="cat-card-v2 block">
@@ -234,7 +256,7 @@ export default async function HomePage() {
 
       {/* ── CATEGORIAS ───────────────────────────────── */}
       <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '80px 40px' }}>
-        <div className="flex items-baseline gap-3 mb-10">
+        <div className="flex items-baseline gap-3 mb-10 scroll-reveal">
           <h2
             className="font-grotesk text-white"
             style={{ fontWeight: 900, fontSize: 'clamp(2rem, 4vw, 3rem)' }}
@@ -256,7 +278,7 @@ export default async function HomePage() {
           </Link>
         </div>
 
-        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3">
+        <div className="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 gap-3 scroll-reveal">
           {categorias.map((cat) => (
             <Link
               key={cat.id}
@@ -289,7 +311,7 @@ export default async function HomePage() {
         <div className="flex flex-col md:flex-row gap-10 md:gap-16">
 
           {/* Vertical label */}
-          <div className="flex flex-row md:flex-col items-start gap-4 md:gap-0 shrink-0 md:w-36">
+          <div className="flex flex-row md:flex-col items-start gap-4 md:gap-0 shrink-0 md:w-36 scroll-reveal">
             <div
               style={{ width: '2px', height: '40px', background: '#00ff88' }}
               className="hidden md:block"
@@ -316,7 +338,7 @@ export default async function HomePage() {
           </div>
 
           {/* Cards */}
-          <div className="flex-1">
+          <div className="flex-1 scroll-reveal">
             {ferramentasDestaque.length === 0 ? (
               <div
                 className="rounded-2xl p-12 text-center"
@@ -421,7 +443,7 @@ export default async function HomePage() {
       {/* ── CTA: SUBMETER ────────────────────────────── */}
       <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 40px 100px' }}>
         <div
-          className="rounded-2xl p-8 md:p-12 flex flex-col sm:flex-row items-center justify-between gap-6"
+          className="rounded-2xl p-8 md:p-12 flex flex-col sm:flex-row items-center justify-between gap-6 scroll-reveal"
           style={{ background: '#111', border: '1px solid #1a1a1a' }}
         >
           <div>
