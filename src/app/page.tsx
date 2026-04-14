@@ -59,7 +59,7 @@ export default async function HomePage() {
       <section className="hero-v2">
         <div
           className="relative max-w-7xl mx-auto px-6 sm:px-10"
-          style={{ paddingTop: '80px', paddingBottom: '100px' }}
+          style={{ paddingTop: '64px', paddingBottom: '64px' }}
         >
           <div className="grid grid-cols-1 lg:grid-cols-5 gap-12 lg:gap-20 items-center">
 

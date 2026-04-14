@@ -38,7 +38,6 @@
 
   .hero-v2 {
     background: #080808;
-    min-height: 100vh;
     position: relative;
   }
   .hero-v2::before {
