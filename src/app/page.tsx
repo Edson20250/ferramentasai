@@ -53,7 +53,7 @@ export default async function HomePage() {
   const heroCategories = categorias.slice(0, 4)
 
   return (
-    <div style={{ background: '#080808', minHeight: '100vh' }}>
+    <div style={{ background: '#f5f4f0', minHeight: '100vh' }}>
 
       {/* ── HERO ─────────────────────────────────────── */}
       <section className="hero-v2">
@@ -258,8 +258,8 @@ export default async function HomePage() {
       <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '80px 40px' }}>
         <div className="flex items-baseline gap-3 mb-10 scroll-reveal">
           <h2
-            className="font-grotesk text-white"
-            style={{ fontWeight: 900, fontSize: 'clamp(2rem, 4vw, 3rem)' }}
+            className="font-grotesk"
+            style={{ fontWeight: 900, fontSize: 'clamp(2rem, 4vw, 3rem)', color: '#111' }}
           >
             EXPLORAR
           </h2>
@@ -271,8 +271,8 @@ export default async function HomePage() {
           </sup>
           <Link
             href="/categorias"
-            className="ml-auto transition-colors"
-            style={{ color: 'rgba(240,240,240,0.25)', fontSize: '12px' }}
+            className="ml-auto transition-colors hover:text-[#111]"
+            style={{ color: '#999', fontSize: '12px' }}
           >
             Ver todas →
           </Link>
@@ -283,7 +283,8 @@ export default async function HomePage() {
             <Link
               key={cat.id}
               href={`/categoria/${cat.slug}`}
-              className="cat-card-v2 block relative overflow-hidden"
+              className="cat-card-light block"
+              style={{ '--cat-color': cat.cor } as React.CSSProperties}
             >
               <div
                 className="absolute top-0 left-0 right-0"
@@ -293,12 +294,12 @@ export default async function HomePage() {
                 {cat.icone}
               </div>
               <p
-                className="font-grotesk font-bold text-white leading-snug mb-1"
-                style={{ fontSize: '13px' }}
+                className="font-grotesk font-bold leading-snug mb-1"
+                style={{ fontSize: '13px', color: '#111' }}
               >
                 {cat.nome}
               </p>
-              <p style={{ color: 'rgba(240,240,240,0.35)', fontSize: '11px' }}>
+              <p style={{ color: '#999', fontSize: '11px' }}>
                 {cat._count.ferramentas} ferramentas
               </p>
             </Link>
@@ -317,21 +318,21 @@ export default async function HomePage() {
               className="hidden md:block"
             />
             <h2
-              className="font-grotesk text-white"
-              style={{ fontWeight: 900, fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', lineHeight: 1 }}
+              className="font-grotesk"
+              style={{ fontWeight: 900, fontSize: 'clamp(1.8rem, 3.5vw, 2.8rem)', lineHeight: 1, color: '#111' }}
             >
               EM
               <br />
               DESTAQUE
             </h2>
             <div
-              style={{ width: '2px', flex: 1, background: '#1a1a1a', minHeight: '60px' }}
+              style={{ width: '2px', flex: 1, background: '#e8e6e0', minHeight: '60px' }}
               className="hidden md:block"
             />
             <Link
               href="/novidades"
-              className="transition-colors md:mt-4 whitespace-nowrap"
-              style={{ color: 'rgba(240,240,240,0.25)', fontSize: '12px' }}
+              className="transition-colors hover:text-[#111] md:mt-4 whitespace-nowrap"
+              style={{ color: '#999', fontSize: '12px' }}
             >
               Ver todas →
             </Link>
@@ -342,13 +343,10 @@ export default async function HomePage() {
             {ferramentasDestaque.length === 0 ? (
               <div
                 className="rounded-2xl p-12 text-center"
-                style={{ border: '2px dashed #1a1a1a' }}
+                style={{ border: '2px dashed #e0ddd6' }}
               >
                 <p className="text-3xl mb-3">🚀</p>
-                <p
-                  className="font-grotesk font-bold mb-4"
-                  style={{ color: 'rgba(240,240,240,0.4)' }}
-                >
+                <p className="font-grotesk font-bold mb-4" style={{ color: '#999' }}>
                   Em breve aqui
                 </p>
                 <Link href="/submeter" className="btn-accent text-xs" style={{ padding: '8px 16px' }}>
@@ -368,14 +366,14 @@ export default async function HomePage() {
                   const linkExterno = f.urlAfiliado || f.url
 
                   return (
-                    <div key={f.id} className="tool-card-v2">
+                    <div key={f.id} className="tool-card-light">
                       <div className="flex items-start gap-3">
                         <div
                           className="rounded-xl flex items-center justify-center flex-shrink-0 overflow-hidden"
                           style={{
                             width: '44px',
                             height: '44px',
-                            background: f.logoUrl ? '#1a1a1a' : `${avatarColor}18`,
+                            background: f.logoUrl ? '#f5f4f0' : `${avatarColor}15`,
                             border: `1.5px solid ${avatarColor}30`,
                           }}
                         >
@@ -400,8 +398,8 @@ export default async function HomePage() {
                           <div className="flex items-center gap-2 flex-wrap mb-1">
                             <Link
                               href={`/ferramenta/${f.slug}`}
-                              className="font-grotesk font-semibold text-white transition-colors hover:text-[#00ff88] leading-snug"
-                              style={{ fontSize: '14px' }}
+                              className="font-grotesk font-semibold transition-colors hover:text-[#00aa55] leading-snug"
+                              style={{ fontSize: '14px', color: '#111' }}
                             >
                               {f.nome}
                             </Link>
@@ -413,7 +411,7 @@ export default async function HomePage() {
                           </div>
                           <p
                             className="line-clamp-2 leading-relaxed mb-3"
-                            style={{ fontSize: '12px', color: 'rgba(240,240,240,0.45)' }}
+                            style={{ fontSize: '12px', color: '#777' }}
                           >
                             {f.descricao}
                           </p>
@@ -423,8 +421,8 @@ export default async function HomePage() {
                               href={linkExterno}
                               target="_blank"
                               rel="noopener noreferrer"
-                              className="font-medium flex items-center gap-0.5 transition-colors hover:text-[#00ff88]"
-                              style={{ fontSize: '12px', color: 'rgba(240,240,240,0.3)' }}
+                              className="font-medium flex items-center gap-0.5 transition-colors hover:text-[#111]"
+                              style={{ fontSize: '12px', color: '#999' }}
                             >
                               Visitar →
                             </a>
@@ -440,37 +438,39 @@ export default async function HomePage() {
         </div>
       </section>
 
-      {/* ── CTA: SUBMETER ────────────────────────────── */}
-      <section style={{ maxWidth: '1280px', margin: '0 auto', padding: '0 40px 100px' }}>
-        <div
-          className="rounded-2xl p-8 md:p-12 flex flex-col sm:flex-row items-center justify-between gap-6 scroll-reveal"
-          style={{ background: '#111', border: '1px solid #1a1a1a' }}
+      {/* ── CTA: SUBMETER — dark closing band ───────────── */}
+      <div style={{ background: '#0a0a0a' }}>
+        <section
+          className="max-w-7xl mx-auto px-6 sm:px-10 scroll-reveal"
+          style={{ padding: '60px 40px 72px' }}
         >
-          <div>
-            <p
-              className="font-grotesk font-bold text-white mb-2"
-              style={{ fontSize: '1.2rem' }}
-            >
-              Tens uma ferramenta de IA?
-            </p>
-            <p style={{ color: 'rgba(240,240,240,0.35)', fontSize: '14px' }}>
-              Aparece em frente de milhares de profissionais lusófonos — CPLP e diáspora.
-            </p>
+          <div className="flex flex-col sm:flex-row items-center justify-between gap-6">
+            <div>
+              <p
+                className="font-grotesk font-bold text-white mb-2"
+                style={{ fontSize: '1.25rem' }}
+              >
+                Tens uma ferramenta de IA?
+              </p>
+              <p style={{ color: 'rgba(240,240,240,0.35)', fontSize: '14px' }}>
+                Aparece em frente de milhares de profissionais lusófonos — CPLP e diáspora.
+              </p>
+            </div>
+            <div className="flex gap-3 shrink-0">
+              <Link
+                href="/submeter"
+                className="text-sm font-medium px-5 py-3 rounded-lg transition-colors"
+                style={{ border: '1px solid #2a2a2a', color: 'rgba(240,240,240,0.7)' }}
+              >
+                Submeter grátis
+              </Link>
+              <Link href="/destaque" className="btn-accent text-sm" style={{ padding: '12px 20px' }}>
+                Destacar ↗
+              </Link>
+            </div>
           </div>
-          <div className="flex gap-3 shrink-0">
-            <Link
-              href="/submeter"
-              className="text-sm font-medium px-5 py-3 rounded-lg transition-colors"
-              style={{ border: '1px solid #2a2a2a', color: 'rgba(240,240,240,0.7)' }}
-            >
-              Submeter grátis
-            </Link>
-            <Link href="/destaque" className="btn-accent text-sm" style={{ padding: '12px 20px' }}>
-              Destacar ↗
-            </Link>
-          </div>
-        </div>
-      </section>
+        </section>
+      </div>
 
     </div>
   )
