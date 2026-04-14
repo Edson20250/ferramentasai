@@ -31,8 +31,10 @@ const config: Config = {
         }
       },
       animation: {
-        'fade-in': 'fadeIn 0.4s ease forwards',
-        'slide-up': 'slideUp 0.4s ease forwards',
+        'fade-in': 'fadeIn 0.5s ease forwards',
+        'slide-up': 'slideUp 0.5s ease forwards',
+        'scale-in': 'scaleIn 0.4s ease forwards',
+        'slide-down': 'slideDown 0.3s ease forwards',
       },
       keyframes: {
         fadeIn: {
@@ -40,9 +42,22 @@ const config: Config = {
           '100%': { opacity: '1' },
         },
         slideUp: {
-          '0%': { opacity: '0', transform: 'translateY(12px)' },
+          '0%': { opacity: '0', transform: 'translateY(16px)' },
           '100%': { opacity: '1', transform: 'translateY(0)' },
         },
+        scaleIn: {
+          '0%': { opacity: '0', transform: 'scale(0.95)' },
+          '100%': { opacity: '1', transform: 'scale(1)' },
+        },
+        slideDown: {
+          '0%': { opacity: '0', transform: 'translateY(-8px)' },
+          '100%': { opacity: '1', transform: 'translateY(0)' },
+        },
+      },
+      boxShadow: {
+        'glow-sm': '0 0 15px -3px rgba(16,185,129,0.15)',
+        'glow': '0 0 25px -5px rgba(16,185,129,0.2)',
+        'glow-lg': '0 0 40px -8px rgba(16,185,129,0.25)',
       },
     },
   },

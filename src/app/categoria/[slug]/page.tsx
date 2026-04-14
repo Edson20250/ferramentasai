@@ -19,7 +19,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
     const cat = await prisma.categoria.findUnique({ where: { slug } })
     if (!cat) return {}
     return {
-      title: `${cat.nome} — Ferramentas de IA em Português`,
+      title: `${cat.nome} — Ferramentas de IA em Portugues`,
       description: cat.descricao,
     }
   } catch {
@@ -28,7 +28,7 @@ export async function generateMetadata({ params }: Props): Promise<Metadata> {
 }
 
 const FILTROS_PRECO = [
-  { value: 'todos', label: 'Todos os preços' },
+  { value: 'todos', label: 'Todos' },
   { value: 'gratuito', label: 'Gratuito' },
   { value: 'freemium', label: 'Freemium' },
   { value: 'pago', label: 'Pago' },
@@ -37,7 +37,7 @@ const FILTROS_PRECO = [
 const FILTROS_ORDEM = [
   { value: 'destaque', label: 'Em destaque' },
   { value: 'novos', label: 'Mais recentes' },
-  { value: 'nome', label: 'Nome A–Z' },
+  { value: 'nome', label: 'Nome A-Z' },
 ]
 
 export default async function CategoriaPage({ params, searchParams }: Props) {
@@ -77,45 +77,86 @@ export default async function CategoriaPage({ params, searchParams }: Props) {
 
   return (
     <div className="max-w-6xl mx-auto px-4 sm:px-6 py-8">
+      {/* Breadcrumb */}
       <nav className="text-xs text-slate-400 mb-6 flex items-center gap-1.5">
-        <Link href="/" className="hover:text-slate-600">Início</Link>
-        <span>/</span>
-        <span className="text-slate-600">{categoria.nome}</span>
+        <Link href="/" className="hover:text-emerald-600 transition-colors">Inicio</Link>
+        <svg className="w-3 h-3 text-slate-300" fill="none" viewBox="0 0 24 24" strokeWidth={2} stroke="currentColor"><path strokeLinecap="round" strokeLinejoin="round" d="M8.25 4.5l7.5 7.5-7.5 7.5" /></svg>
+        <span className="text-slate-600 font-medium">{categoria.nome}</span>
       </nav>
+
       <div className="flex gap-8">
-        <aside className="hidden lg:block w-52 shrink-0">
-          <p className="text-xs font-medium text-slate-400 uppercase tracking-wider mb-3">Categorias</p>
+        {/* Sidebar */}
+        <aside className="hidden lg:block w-56 shrink-0">
+          <p className="text-xs font-semibold text-slate-400 uppercase tracking-wider mb-3">Categorias</p>
           <ul className="space-y-0.5">
             {todasCategorias.map(cat => (
               <li key={cat.id}>
-                <Link href={`/categoria/${cat.slug}`} className={`flex items-center gap-2 px-3 py-2 rounded-lg text-sm transition-colors ${cat.slug === slug ? 'bg-slate-900 text-white font-medium' : 'text-slate-600 hover:bg-slate-100'}`}>
-                  <span>{cat.icone}</span><span className="truncate">{cat.nome}</span>
+                <Link
+                  href={`/categoria/${cat.slug}`}
+                  className={`flex items-center gap-2 px-3 py-2.5 rounded-xl text-sm transition-all duration-200 ${
+                    cat.slug === slug
+                      ? 'bg-slate-900 text-white font-medium shadow-sm'
+                      : 'text-slate-600 hover:bg-slate-100'
+                  }`}
+                >
+                  <span>{cat.icone}</span>
+                  <span className="truncate">{cat.nome}</span>
                 </Link>
               </li>
             ))}
           </ul>
         </aside>
+
+        {/* Content */}
         <div className="flex-1 min-w-0">
-          <div className="mb-6">
-            <h1 className="font-display text-2xl font-700 text-slate-900 mb-1">{categoria.icone} {categoria.nome}</h1>
+          <div className="mb-7">
+            <h1 className="font-display text-2xl font-700 text-slate-900 mb-1.5">
+              {categoria.icone} {categoria.nome}
+            </h1>
             <p className="text-slate-500 text-sm">{categoria.descricao}</p>
-            <p className="text-xs text-slate-400 mt-1">{categoria._count.ferramentas} ferramentas</p>
+            <p className="text-xs text-slate-400 mt-1.5">
+              {categoria._count.ferramentas} ferramenta{categoria._count.ferramentas !== 1 ? 's' : ''}
+            </p>
           </div>
-          <div className="flex flex-wrap gap-2 mb-6 pb-6 border-b border-slate-100">
+
+          {/* Filters */}
+          <div className="flex flex-wrap gap-3 mb-7 pb-7 border-b border-slate-100">
             <div className="flex items-center gap-1.5">
-              <span className="text-xs text-slate-400">Preço:</span>
+              <span className="text-xs text-slate-400 mr-1">Preco:</span>
               {FILTROS_PRECO.map(f => (
-                <Link key={f.value} href={`/categoria/${slug}?preco=${f.value}&ordem=${ordem}`} className={`text-xs px-3 py-1 rounded-full border transition-colors ${preco === f.value ? 'bg-slate-900 text-white border-slate-900' : 'border-slate-200 text-slate-600'}`}>{f.label}</Link>
+                <Link
+                  key={f.value}
+                  href={`/categoria/${slug}?preco=${f.value}&ordem=${ordem}`}
+                  className={`text-xs px-3 py-1.5 rounded-full border transition-all duration-200 ${
+                    preco === f.value ? 'pill-active' : 'pill-inactive'
+                  }`}
+                >
+                  {f.label}
+                </Link>
               ))}
             </div>
             <div className="flex items-center gap-1.5 ml-auto">
               {FILTROS_ORDEM.map(f => (
-                <Link key={f.value} href={`/categoria/${slug}?preco=${preco}&ordem=${f.value}`} className={`text-xs px-3 py-1 rounded-full border transition-colors ${ordem === f.value ? 'bg-slate-900 text-white border-slate-900' : 'border-slate-200 text-slate-600'}`}>{f.label}</Link>
+                <Link
+                  key={f.value}
+                  href={`/categoria/${slug}?preco=${preco}&ordem=${f.value}`}
+                  className={`text-xs px-3 py-1.5 rounded-full border transition-all duration-200 ${
+                    ordem === f.value ? 'pill-active' : 'pill-inactive'
+                  }`}
+                >
+                  {f.label}
+                </Link>
               ))}
             </div>
           </div>
+
+          {/* Results */}
           {ferramentas.length === 0 ? (
-            <div className="text-center py-12 text-slate-400"><p className="text-2xl mb-2">🔍</p><p>Nenhuma ferramenta encontrada</p></div>
+            <div className="text-center py-14 text-slate-400">
+              <div className="w-14 h-14 rounded-2xl bg-slate-50 flex items-center justify-center text-2xl mx-auto mb-4">🔍</div>
+              <p className="font-display font-600 text-slate-700 mb-1">Nenhuma ferramenta encontrada</p>
+              <p className="text-sm text-slate-400">Tenta ajustar os filtros</p>
+            </div>
           ) : (
             <div className="grid grid-cols-1 md:grid-cols-2 gap-3">
               {ferramentas.map(f => <ToolCard key={f.id} ferramenta={f as any} />)}

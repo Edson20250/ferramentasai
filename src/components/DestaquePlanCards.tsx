@@ -13,16 +13,16 @@ type Plano = {
 const PLANOS: Plano[] = [
   {
     id: 'basico',
-    nome: 'Básico',
+    nome: 'Basico',
     preco: 49,
-    descricao: 'Para começar a ganhar visibilidade',
+    descricao: 'Para comecar a ganhar visibilidade',
     features: [
       'Listagem verificada com badge',
-      'Posição destacada na categoria',
+      'Posicao destacada na categoria',
       'Link direto para o teu site',
-      'Válido por 30 dias (renováveis)',
+      'Valido por 30 dias (renovaveis)',
     ],
-    cta: 'Começar com Básico',
+    cta: 'Comecar com Basico',
     destaque: false,
   },
   {
@@ -31,28 +31,28 @@ const PLANOS: Plano[] = [
     preco: 99,
     descricao: 'O mais escolhido por fundadores',
     features: [
-      'Tudo do Básico',
-      'Posição topo de categoria',
+      'Tudo do Basico',
+      'Posicao topo de categoria',
       'Badge "Destaque" dourado',
       'Aparece na homepage',
-      'Válido por 60 dias (renováveis)',
+      'Valido por 60 dias (renovaveis)',
     ],
-    cta: 'Começar com Pro',
+    cta: 'Comecar com Pro',
     destaque: true,
   },
   {
     id: 'destaque',
     nome: 'Premium',
     preco: 199,
-    descricao: 'Máxima exposição garantida',
+    descricao: 'Maxima exposicao garantida',
     features: [
       'Tudo do Pro',
-      'Posição #1 garantida na categoria',
-      'Menção na newsletter (12.000+ leitores)',
+      'Posicao #1 garantida na categoria',
+      'Mencao na newsletter (12.000+ leitores)',
       'Post nas redes sociais',
-      'Válido por 90 dias (renováveis)',
+      'Valido por 90 dias (renovaveis)',
     ],
-    cta: 'Começar com Premium',
+    cta: 'Comecar com Premium',
     destaque: false,
   },
 ]
@@ -62,32 +62,36 @@ export function DestaquePlanCards({ ferramentaId }: { ferramentaId: string }) {
   const missing = !trimmed
 
   return (
-    <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-12">
+    <div className="grid grid-cols-1 md:grid-cols-3 gap-5 mb-14">
       {PLANOS.map((p) => (
         <div
           key={p.id}
-          className={`bg-white rounded-2xl p-6 ${
-            p.destaque ? 'border-2 border-emerald-400 shadow-lg relative' : 'border border-slate-200'
+          className={`relative rounded-2xl p-7 transition-all duration-300 hover:-translate-y-1 ${
+            p.destaque
+              ? 'bg-gradient-to-b from-white to-emerald-50/40 border-2 border-emerald-400 shadow-xl shadow-emerald-500/10'
+              : 'bg-white border border-slate-200/80 hover:shadow-lg hover:shadow-emerald-500/5 hover:border-emerald-200'
           }`}
         >
           {p.destaque && (
-            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-xs font-medium px-3 py-1 rounded-full">
+            <div className="absolute -top-3 left-1/2 -translate-x-1/2 bg-emerald-500 text-white text-[10px] font-bold uppercase tracking-wider px-3.5 py-1 rounded-full shadow-md shadow-emerald-500/30">
               Mais popular
             </div>
           )}
 
-          <p className="font-display font-700 text-slate-900 mb-0.5">{p.nome}</p>
-          <p className="text-xs text-slate-400 mb-4">{p.descricao}</p>
+          <p className="font-display font-700 text-slate-900 text-lg mb-0.5">{p.nome}</p>
+          <p className="text-xs text-slate-400 mb-5">{p.descricao}</p>
 
-          <div className="mb-5">
-            <span className="font-display text-3xl font-800 text-slate-900">€{p.preco}</span>
-            <span className="text-slate-400 text-sm">/mês</span>
+          <div className="mb-6">
+            <span className="font-display text-4xl font-800 text-slate-900">&euro;{p.preco}</span>
+            <span className="text-slate-400 text-sm ml-1">/mes</span>
           </div>
 
-          <ul className="space-y-2 mb-6">
+          <ul className="space-y-3 mb-7">
             {p.features.map((f) => (
-              <li key={f} className="flex items-start gap-2 text-sm text-slate-600">
-                <span className="text-emerald-500 mt-0.5 shrink-0">✓</span>
+              <li key={f} className="flex items-start gap-2.5 text-sm text-slate-600">
+                <svg className="w-4 h-4 text-emerald-500 mt-0.5 shrink-0" fill="none" viewBox="0 0 24 24" strokeWidth={2.5} stroke="currentColor">
+                  <path strokeLinecap="round" strokeLinejoin="round" d="M4.5 12.75l6 6 9-13.5" />
+                </svg>
                 {f}
               </li>
             ))}
@@ -103,17 +107,17 @@ export function DestaquePlanCards({ ferramentaId }: { ferramentaId: string }) {
               if (missing) {
                 e.preventDefault()
                 alert(
-                  'Indica primeiro a ferramenta: abre a página da tua ferramenta no diretório e usa o botão «Destacar», ou adiciona ?ferramentaId= ao URL desta página.',
+                  'Indica primeiro a ferramenta: abre a pagina da tua ferramenta no diretorio e usa o botao "Destacar", ou adiciona ?ferramentaId= ao URL desta pagina.',
                 )
               }
             }}
-            className={`block text-center py-2.5 rounded-xl text-sm font-medium transition-colors ${
+            className={`block text-center py-3 rounded-xl text-sm font-semibold transition-all duration-200 ${
               p.destaque
-                ? 'bg-emerald-500 text-white hover:bg-emerald-400'
+                ? 'bg-emerald-600 text-white hover:bg-emerald-500 shadow-sm shadow-emerald-600/20'
                 : 'bg-slate-100 text-slate-900 hover:bg-slate-200'
-            } ${missing ? 'opacity-80' : ''}`}
+            } ${missing ? 'opacity-70' : 'active:scale-[0.97]'}`}
           >
-            {p.cta} →
+            {p.cta} &rarr;
           </a>
         </div>
       ))}
